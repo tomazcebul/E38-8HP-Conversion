@@ -20,7 +20,7 @@ This document is the high-level conversion plan and index. Detailed procedures, 
 | Item | Build-specific value |
 | --- | --- |
 | Vehicle | 2001 BMW E38 740d |
-| VIN | WBAGE81080DB84447 |
+| VIN | WBAGE81 |
 | Engine | BMW M67B39 |
 | Original transmission | BMW A5S 560Z / ZF 5HP30 |
 | Original remanufactured transmission | BMW 24 00 7 506 999 |
