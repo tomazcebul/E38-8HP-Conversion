@@ -2,26 +2,26 @@
 
 ## Scope
 
-This document covers the mechanical installation of the ZF 8HP50Z in the 2001 BMW E38 740d: removal, trial fitting, engine adapter and converter interface, mounts, driveshaft, cooling, final assembly, and mechanical validation.
+This document covers the mechanical installation of a BMW F10 ZF 8HP70 in the 2001 BMW E38 740d: removal, trial fitting, engine adapter and converter interface, mounts, driveshaft, cooling, final assembly, and mechanical validation.
 
-Read the project overview and record the exact donor transmission and converter identities in [Introduction](Introduction.md) before ordering conversion parts. CANTCU wiring and configuration are covered separately in [CANTCU Installation](CANTCU-Installation.md) and [CANTCU Programming and Parameter Tuning](CANTCU-Programming.md).
+Read the project overview and record the exact donor transmission and converter identities in [Introduction](Introduction.md) before ordering conversion parts. CANTCU wiring and configuration are covered separately in [CANTCU Installation](CANTCU-Installation.md) and [CANTCU Programming and Calibration](CANTCU-Programming.md).
 
 > [!WARNING]
 > Fabrication, welding, driveshaft modification, and drivetrain alignment affect road safety. Use suitably qualified specialists and comply with local inspection requirements.
 
 ## Components
 
-- Complete 8HP50Z with matched mechatronics, oil pan, connector, and torque converter
-- Engine-to-transmission adapter plate
-- Original M67-specific starter and M67 flexplate/ring gear, subject to inspection and dimensional validation
-- Modified or custom crankshaft-to-converter adapter for the retained M67 components
+- Complete F10 8HP70 with matched mechatronics, oil pan, connector, output flange, and torque converter
+- Adamat Performance M67-specific engine-to-transmission adapter and trigger-flywheel kit, with final contents and application confirmed in writing
+- Original M67-specific starter, subject to inspection and compatibility confirmation with the Adamat kit
+- Adamat-supplied or specified crankshaft-to-converter adapter, spacer, and associated fasteners
 - Converter bolts, bellhousing bolts, dowels, and all safety-critical fasteners
 - Original BMW E38 gearbox support `22 32 1 096 427`
-- Custom 8HP50Z-to-OEM-support adapter and correctly rated transmission mounts
-- Professionally fabricated two-piece driveshaft, dynamically balanced as a complete assembly
-- Output flange installed on the exact donor 8HP50Z, matching RWD F3x transmission-end coupling, and E38 rear section with differential-end CV joint
+- Custom 8HP70-to-OEM-support adapter and correctly rated transmission mounts
+- Original E38 two-piece driveshaft, professionally length-adjusted and dynamically balanced as a complete assembly
+- Output flange installed on the exact donor 8HP70 and original E38 transmission-end 110 mm/M12 coupling
 - Serviceable OEM E38 transmission oil cooler or a suitably rated replacement
-- Donor-specific 8HP50 oil-port adapter with compatible seals and fittings
+- Donor-specific 8HP70 oil-port adapter with compatible seals and fittings
 - BMW `17 22 7 592 723` / MAHLE-BEHR `TO 15 80` transmission-oil thermostat with matching line ends or purpose-made adapters, subject to correct routing and installation verification
 - ATF-rated hoses, crimps, fittings, line supports, abrasion protection, and heat protection sized for the verified cooler flow
 - New transmission fluid, oil pan/filter assembly, seals, and one-time-use hardware specified by ZF
@@ -58,7 +58,7 @@ Before dismantling the vehicle:
 
 Follow the BMW workshop manual for removal details and tightening procedures. Drain and dispose of fluids responsibly.
 
-## 3. Trial-Fit the 8HP50Z
+## 3. Trial-Fit the F10 8HP70
 
 Trial-fit the bare transmission before finalizing adapters, mounts, or the driveshaft. Check and record:
 
@@ -90,61 +90,44 @@ The design must establish:
 
 Record all measured and final dimensions in [Mechanical Build Record](#mechanical-build-record). Have the completed rotating assembly checked for runout and balance.
 
-### Selected M62-to-8HP Adapter Basis for the M67
+### Selected Adamat M67-to-8HP Adapter Kit
 
-Research completed on 29 August 2026 did not find an OEM drawing, shared converter-housing part number, or measured coordinate comparison proving that the M67 bellhousing bolt-and-dowel pattern is identical to the M60/M62 pattern. Subsequent correspondence with PMC provides customer-history context but does not confirm dimensional compatibility.
+The selected solution is an Adamat Performance M67-specific adapter and flywheel kit. No OEM drawing or measured coordinate comparison establishes that the M67 and M60/M62 bellhousing patterns are identical; the exact M67B39 and donor-8HP70 geometry therefore requires documented confirmation.
 
-On 30 August 2026, James Scott Foley provided a firsthand account of the adapter used for his publicly shown M67D44/8HP75 conversion in response to a Facebook 8HP swap-group question:
+#### Adamat Manufacturer Confirmation
 
-> For the adapter I got one for M62 from PMC, and modified it to suit. The bolt pattern was ok, but I had to machine for the starter, make some custom nuts and modify the spacer they provided.
+In direct email correspondence supplied for this project, Adamat Performance representative Adam Walczak confirmed that Adamat can manufacture an M67-specific kit. He described its adapter plate as practically the same as the M62 version, while the flywheel is similar but has its trigger teeth positioned correctly so the engine can start using the original DME.
 
-Foley's [8HP swap-group post and comments](https://www.facebook.com/groups/zf8hpswaptech/permalink/1037322348805229/) identify the build as an E65 M67D44 installed in an E46 coupe with an 8HP75 and a 25 mm-thick PMC adapter. He states that the adapter fits, but the starter opening required machining and the crank-position sensor sat too far out. The thread does not answer whether the stock M67 flexplate was used.
+The [published Adamat M60/M62/S62-to-8HP kit](https://adamat.com.pl/en/adapter-bmw-v8-m62-m60-s62-to-bmw-zf-8hp45-8hp50-8hp51-8hp70-8hp75.html) is the design basis for the M67 derivative. Adamat publishes the following base-kit specifications:
 
-The supplied flexplate spacer reportedly clamped the torque converter between the crankshaft and transmission and required machining. The account does not provide a verified final spacer dimension or converter pull-forward specification. It also reports a torque-converter-area rattle after startup, so it does not prove that the final rotating interface was correct or undamaged.
+- One-piece `AlZnMg+Ti` lightweight-alloy flywheel with a steel starter ring, total weight `4.2 kg`
+- Dynamically balanced flywheel and a manufacturer-claimed maximum torque capacity of `2000 Nm`
+- `50 mm`-thick AW7075-T651 aluminium transmission adapter
+- Adapter socket for the original M62/S62 crankshaft-position sensor
+- Flywheel, adapter, and transmission mounting bolts
+- Applications including N57/N57N `GA8HP70` and `GA8HP75X`, plus listed B58, B57, B48, B46, and B47C/D20 8HP variants
 
-This is practical evidence that the PMC M62 adapter bolt pattern was usable on one M67D44/8HP75 build. It also confirms that the kit was not a direct-fit solution: starter machining, custom fasteners, crank-sensor correction, and spacer modification were required. No drawing, runout result, final pull-forward measurement, transmission assembly number, or converter part number was provided. Because this project uses an earlier M67B39 and an 8HP50Z, treat this as evidence from one modified M67D44 installation, not as verification of M67-family or M67B39 compatibility.
+The M62/S62 crank-sensor socket and trigger arrangement are not the M67 specification. For the selected derivative, Adamat must supply the M67 trigger geometry described in its email and confirm any changes to the base adapter, flywheel, starter ring, converter interface, fasteners, material, thickness, weight, balance, and torque rating. Use the published `50 mm` thickness only for preliminary packaging until Adamat confirms the M67 drawing and the delivered kit is measured.
 
-Establish the correct installed converter clearance and pull-forward from documentation for the exact converter, flexplate, adapter, and transmission. Reject any stack-up that clamps the converter when the bellhousing is tightened or leaves inadequate pump engagement.
+The project file [M67-8HP4576-1.jpg](Adamat-Adapter/M67-8HP4576-1.jpg) is a still from [BMW 740D E38 V8 TWIN-TURBO. HOW TO INSTALL AN 8-SPEED AUTOMATIC TRANSMISSION?](https://www.youtube.com/watch?v=XtBa4phpDPs) at `6:34`. The pictured Adamat flywheel is engraved `BMW V8 M67` and identifies BMW ZF `8HP45-76` applications. This is direct visual evidence that Adamat has produced an M67-designated flywheel for an 8HP conversion. The accompanying M62 kit photographs show the related adapter and flywheel construction but are not M67 dimensional evidence.
 
-#### PMC Manufacturer Response
+Adamat has not yet identified the M67 variant used for its geometry, the pictured transmission and converter, the final adapter thickness, or the specified converter pull-forward. Before manufacture, obtain a written specification and drawing tied to this M67B39, transmission, and converter. Verify the delivered parts by measurement and trial fit.
 
-In an email received on 30 August 2026, PMC representative Norbert Borkowski stated that PMC knows of two customers who used its M62 adapter kit for an M67 swap. Those customers did not share installation details, so PMC cannot confirm whether modifications were required or whether every flange bolt fitted the M67.
-
-James Scott Foley is likely one of those two customers because his documented build used the same PMC M62 adapter for an M67D44 swap. PMC did not identify its customers in the correspondence, so this overlap is probable but unconfirmed. Count the available evidence as two reported PMC customer swaps in total, not as PMC's two reports plus Foley as a third independent installation.
-
-PMC described the M67 V8 diesel pattern as unique to that engine family and said the M62 flange might fit because PMC designs its flanges to cover multiple engines where possible. PMC explicitly identified torque-converter offset as unresolved because it lacks data for the rare M67 application. This is not manufacturer approval of M67 compatibility.
-
-PMC offered to accept a return after a careful test-fit if the kit proves incompatible, provided it is not marked. Confirm the current return conditions in writing before ordering. A non-marking test-fit may indicate bolt alignment but cannot validate converter offset, dowel registration, starter geometry, crank-sensor position, or running concentricity.
-
-DomiWorks reports that all seven 8HP50/51 variants it has identified, including the F-series B58 8HP50, share the small bellhousing pattern commonly called the N57 pattern. It also records a flat converter mounting face with six M10 fasteners and a 32 mm guide nose for this family. This supports transmission-side compatibility with an adapter designed for the N57-pattern 8HP family.
-
-A shared transmission pattern does not establish the M67 crank register, flywheel attachment, starter/ring-gear geometry, crank-sensor operation, converter pilot engagement, or axial spacing. Treat the PMC product below as **unconfirmed for the M67** until those engine-side details are verified.
-
-**PMC:** The [PMC Motorsport product 5072](https://pmcmotorsport-shop.com/product-eng-5072-Adapter-kit-BMW-V8-M62-BMW-ZF-8HP-8HP75-8HP70.html), symbol `A-M62-8HP`, has a manufacturer-published gearbox-adapter thickness of `25 mm` (`0.98 in`). PMC specifies M62B35/M62B44/M62B46 and S62B50 engines with N57/N57N 8HP70, N57/N57N 8HP70X, and B57 8HP75 transmissions. The product specification does not list the M67 or B58 8HP50, although PMC's installation diagram is captioned for B58 8HP50/51 as well as N57/N57N2 8HP70/75/76. DomiWorks' identification data independently places the B58 GA8HP50Z in the same N57-pattern bellhousing family.
-
-PMC's advertised M62 configuration specifies M60/M62 starter `12 41 1 729 981` or `12 41 1 736 921` and M62 flexplate/ring gear `11 22 1 435 235` or `11 22 1 741 143`. Those parts are not the project specification: BMW catalogs the starter and flexplate/ring gear as M67-specific components, and this conversion will retain the M67 parts. Consequently, the supplied PMC starter opening, crankshaft-position-sensor adapter, torque-converter adapter, spacer, and associated fasteners must be treated as modification inputs rather than direct-fit parts.
-
-The listed PMC kit contents are the aluminium gearbox adapter, gearbox-adapter bolts, torque-converter adapter, crankshaft-bolt kit, and crankshaft-position-sensor adapter. Its instructions describe an M62 automatic flexplate with an N57 torque converter and show bellhousing cutting for starter clearance. That assembly procedure cannot be transferred unchanged to the M67. Establish the M67 starter position and engagement, M67 ring-gear position, crank-sensor geometry, converter pilot engagement, and complete axial stack by measurement before machining or final assembly.
-
-PMC reports two customer M67 swaps using this kit but cannot confirm modifications, complete bolt fit, or converter offset. Foley, likely one of those two customers, supplies one detailed M67D44/8HP75 precedent for modifying the 25 mm kit, including starter machining, custom nuts, crank-sensor-position correction, and spacer correction. His reported thickness now agrees with PMC's published specification, but the exact M67B39 geometry and 8HP50 converter interface remain to be established for this project.
-
-Use the 25 mm PMC kit as the project basis because its shorter axial package is preferable to the previously considered 50 mm alternative. This selection does not establish compatibility. The kit is not documented as a direct-fit M67B39/8HP50 solution, so do not approve it for final installation until the required modifications and compatibility with `M67B39`, the transmission assembly number, and the torque-converter number are established.
-
-Request a drawing or written values for:
+Request the following drawing data or written values from Adamat for the selected kit:
 
 1. Engine-side adapter bolt and dowel coordinates, dowel diameters, and register diameter/depth.
 2. Crankshaft bolt count, pitch-circle diameter, fastener size, locating register, flange stand-off, and flywheel mounting-face offset.
 3. Flywheel/flexplate part used, ring-gear tooth count and axial position, required starter part number and mounting position, and pinion engagement.
 4. Crankshaft-sensor type, target pattern, tooth count, index angle, air gap, and whether the M67 DDE can retain its original speed/reference signal.
-5. Exact compatible 8HP50 converter, converter pilot diameter/depth, mounting pattern, installed clearance, and specified pull-forward distance.
+5. Exact compatible 8HP70 converter, converter pilot diameter/depth, mounting pattern, installed clearance, and specified pull-forward distance.
 6. Adapter thickness, bellhousing modifications, fastener lengths and grades, access for converter bolts, and required machining.
 7. Maximum rated engine torque and whether the supplied flywheel has been balanced independently or with a specified converter/crank assembly.
 
-If the vendor confirms only the bellhousing bolt pattern, the kit remains unapproved. The quickest conclusive pattern check is to trace or scan the rear face of the bare M67 block and compare its bolt centers, dowels, starter opening, and crank center with an M60/M62 adapter drawing. Alternatively, offer the original M67 5HP30 converter housing to the adapter supplier for direct coordinate measurement.
+If Adamat confirms only the bellhousing bolt pattern, the kit remains unapproved for final installation. The quickest conclusive pattern check is to trace or scan the rear face of the bare M67 block and compare its bolt centers, dowels, starter opening, and crank center with Adamat's drawing. Alternatively, offer the original M67 5HP30 converter housing to Adamat for direct coordinate measurement.
 
 ## 5. Fabricate the Transmission-Support Adapter and Driveshaft
 
-Retain the original BMW E38 gearbox support `22 32 1 096 427` at the body-side mounting points. BMW catalog data identifies it as an E38 gearbox support used from April 1999; its listed weight is `1.176 kg`. Fabricate an intermediate adapter between the 8HP50Z transmission-mount interface and this OEM support rather than replacing the support with a fully custom crossmember.
+Retain the original BMW E38 gearbox support `22 32 1 096 427` at the body-side mounting points. BMW catalog data identifies it as an E38 gearbox support used from April 1999; its listed weight is `1.176 kg`. Fabricate an intermediate adapter between the F10 8HP70 transmission-mount interface and this OEM support rather than replacing the support with a fully custom crossmember.
 
 Position the drivetrain without introducing harmful engine or propshaft angles. Finalize the adapter only after the engine-to-transmission interface and output position are established. The adapter must:
 
@@ -160,81 +143,64 @@ Create a dimensioned drawing before fabrication. Use suitable structural materia
 
 ### Gear-Ratio Comparison
 
-Published BMW E38 and transmission-reference data give the following internal ratios for the A5S 560Z / ZF 5HP30 and the second-generation ZF 8HP50. Record the exact donor assembly number and confirm its ratio set from ZF or BMW data before entering ratios in CANTCU.
+Published BMW E38 and transmission-reference data give the following internal ratios for the A5S 560Z / ZF 5HP30 and the common first-generation ZF 8HP70 ratio set. Treat the 8HP70 values as preliminary: record the exact donor assembly number and confirm its ratio set from BMW or ZF data before entering ratios in CANTCU.
 
 <!-- markdownlint-disable MD060 -->
 
-| Gear | 5HP30 ratio | 5HP30 overall with 2.65 final drive | 8HP50 ratio | 8HP50 overall with 2.65 final drive |
+| Gear | 5HP30 ratio | 5HP30 overall with 2.65 final drive | 8HP70 ratio | 8HP70 overall with 2.65 final drive |
 | --- | ---: | ---: | ---: | ---: |
-| 1 | 3.550 | 9.408 | 5.000 | 13.250 |
-| 2 | 2.240 | 5.936 | 3.200 | 8.480 |
-| 3 | 1.540 | 4.081 | 2.143 | 5.679 |
-| 4 | 1.000 | 2.650 | 1.720 | 4.558 |
-| 5 | 0.790 | 2.094 | 1.314 | 3.482 |
+| 1 | 3.550 | 9.408 | 4.714 | 12.492 |
+| 2 | 2.240 | 5.936 | 3.143 | 8.329 |
+| 3 | 1.540 | 4.081 | 2.106 | 5.581 |
+| 4 | 1.000 | 2.650 | 1.667 | 4.418 |
+| 5 | 0.790 | 2.094 | 1.285 | 3.405 |
 | 6 | - | - | 1.000 | 2.650 |
-| 7 | - | - | 0.822 | 2.178 |
-| 8 | - | - | 0.640 | 1.696 |
-| Reverse | 3.680 | 9.752 | 3.456 | 9.158 |
+| 7 | - | - | 0.839 | 2.223 |
+| 8 | - | - | 0.667 | 1.768 |
+| Reverse | 3.680 | 9.752 | 3.317 | 8.790 |
 
 <!-- markdownlint-enable MD060 -->
 
-The 8HP50 first gear is `40.8%` shorter than the 5HP30 first gear with the same final drive, increasing torque multiplication at launch. Its eighth gear gives `19.0%` lower engine speed than the 5HP30 fifth gear at the same road speed, ignoring converter slip. Direct drive moves from fourth gear in the 5HP30 to sixth gear in the 8HP50. The forward-ratio span increases from approximately `4.49` to `7.81`.
+The preliminary 8HP70 first gear is `32.8%` shorter than the 5HP30 first gear with the same final drive, increasing torque multiplication at launch. Its eighth gear gives `15.6%` lower engine speed than the 5HP30 fifth gear at the same road speed, ignoring converter slip. Direct drive moves from fourth gear in the 5HP30 to sixth gear in the 8HP70. The forward-ratio span increases from approximately `4.49` to `7.07`.
 
 These ratios do not by themselves determine shift points, launch traction, converter behavior, maximum road speed, or acceptable output-shaft speed. Confirm tyre rolling circumference, engine speed range, converter characteristics, and the exact donor ratio set when configuring and validating CANTCU.
 
 ### Transmission Length Comparison
 
-Research completed on 30 August 2026 found one usable 8HP50 measurement but no reliable same-datum published length for the E38 740d A5S 560Z / ZF 5HP30:
-
-- DomiWorks' technical-information table lists `682.9 mm` from the bellhousing mating plane to the output-flange mating plane for a BMW B58 RWD generation-2 8HP50. That table labels the entry G-series, while DomiWorks' identification page lists the B58 8HP50 under F-series applications. Because the source is internally inconsistent on platform, use the dimension only as an indicative packaging value and do not use the platform label to identify the donor.
-- The ZF 5HP30 spare-parts catalog and other located public sources do not state an equivalent external length. Parts diagrams are not dimensioned and must not be scaled.
-- The `682.9 mm` value is not a universal 8HP50 specification. The exact donor assembly remains unidentified, so its length must also be measured.
+No verified same-datum external-length pair is recorded for the exact F10 8HP70 and the E38 740d A5S 560Z / ZF 5HP30. The ZF 5HP30 spare-parts catalog and other located public sources do not state an equivalent external length, and dimensions from other 8HP variants must not be transferred. Parts diagrams are not dimensioned and must not be scaled.
 
 Measure both transmissions between the same reference planes: place a straightedge across the engine mating face and measure parallel to the transmission axis to the propshaft-coupling face of the installed output flange. Record the flange fitted to each transmission because flange height changes this result.
 
 For installation planning, adapter thickness moves the 8HP output farther rearward relative to the engine. As a first-order comparison:
 
 $$
-\Delta L = (L_{\mathrm{8HP50}} + t_{\mathrm{adapter}}) - L_{\mathrm{5HP30}}
+\Delta L = (L_{\mathrm{8HP70}} + t_{\mathrm{adapter}}) - L_{\mathrm{5HP30}}
 $$
 
-For PMC product 5072, use `25 mm` as the nominal published adapter thickness for preliminary packaging only. Measure the received adapter and use the actual assembled axial stack for final calculations.
+Use the M62 base kit's published `50 mm` adapter thickness for preliminary packaging only. Obtain confirmation that the M67 derivative retains this thickness, then measure the received adapter and complete assembled axial stack before finalizing the transmission support or driveshaft.
 
 Confirm the actual output-flange position by trial-fitting the complete adapter, transmission, mounts, and retained donor flange. Account separately for any register, spacer, or engine-side geometry that changes the effective axial stack. Do not order or cut the driveshaft from published transmission lengths alone.
 
-Because the effective 8HP50Z output position is not yet established, measure the installed drivetrain before fabricating the driveshaft. Retain the donor 8HP50Z output flange. The selected solution is a professionally fabricated two-piece hybrid driveshaft that retains as much of the OEM E38 assembly as practicable, including the rear CV joint, centre joint, centre support and bearing, and rear shaft section. Adapt only the forward section using the transmission-end portion of a rear-wheel-drive F3x driveshaft matched to the retained flange.
+Because the effective F10 8HP70 output position is not yet established, measure the installed drivetrain before modifying the driveshaft. Retain the donor 8HP70 output flange and the complete original E38 two-piece driveshaft. Both transmission interfaces use a `110 mm` bolt circle with M12 fasteners; no donor driveshaft section is required. Adjust only the effective length of the E38 forward shaft section.
 
-Finalize the engine mounts, OEM support position, custom support adapter, transmission mounts, and differential position first. With the vehicle at normal ride height, measure the required installed length between the 8HP50Z coupling face and rear differential interface using the driveshaft fabricator's specified datums and allowance. Supply the specialist with the complete E38 shaft and the matching RWD F3x 8HP50 donor shaft. The specialist must establish cut positions, tube overlap or replacement, joint phasing, centre-bearing preload and position, spline engagement and plunge allowance, critical speed, torque capacity, runout, weld design, reinforcement, and final installed length. Dynamically balance the complete two-piece assembly together after all welding and refurbishment.
+Finalize the engine mounts, OEM support position, custom support adapter, transmission mounts, and differential position first. With the vehicle at normal ride height, measure the required installed length between the 8HP70 coupling face and differential interface using the driveshaft fabricator's specified datums and allowance. Supply the complete E38 shaft to the specialist. The specialist must establish the length correction, cut and weld locations, joint phasing, centre-bearing position and preload, spline engagement and plunge allowance, critical speed, torque capacity, runout, weld design, and final installed length. Dynamically balance the complete two-piece assembly after modification and refurbishment.
 
-The E38 740d catalog identifies two different driveshaft end interfaces. At the transmission end it lists universal joint `26 11 7 572 664`, specified as `LK=110MM/12`, with three M12 fasteners. At the differential end it lists constant-velocity joint with knurled bush `26 11 1 229 772`, specified as `LK=94MM (Z=34)`, with six M10 fasteners. Do not describe the rear connection as a 110 mm flange; the `110 mm / M12` specification belongs to the transmission-end coupling.
-
-DomiWorks lists a 105 mm output-flange bolt circle with 22 mm inserts for the B58 RWD 8HP50 entry. Confirm the flange dimensions on the exact donor and select a matching RWD F3x transmission-end driveshaft section. Retain the E38 rear section and its `94 mm` CV-joint interface at the differential unless inspection or the driveshaft specialist requires replacement.
-
-### Rejected Output-Flange Substitutions
-
-Research completed on 29 August 2026 does **not** support fitting the original 5HP30 flange to the 8HP50Z. The E38 740d catalog identifies its output flange as BMW `24 20 1 423 752`; this diesel E38-specific 2.19 kg part is listed for the 730d and 740d, with no 8HP application or supersession. It is not the gasoline-E38 5HP30 flange `24 20 1 422 521`.
-
-The 5HP30 catalog places `24 20 1 423 752` in an output assembly with drive extension `24 13 1 422 520`, 57 x 73 x 8 mm shaft seal `24 13 1 422 667`, ring nut `24 20 1 421 170`, and selective adjusting plates. Documented replacement flanges for the RWD 8HP45/50/70/75 family have 43 internal splines; one measured listing is 78 mm high. No BMW, ZF, or transmission-parts source cross-references the 5HP30 flange to that family.
-
-The original 5HP30 flange is not interchangeable with the 8HP50Z on the available evidence and is not part of the selected design.
-
-BMW 110 mm 8HP output-flange kit `24 20 7 604 955`, superseded by `24 00 8 743 416`, was also evaluated. BMW catalogs it for N63 8HP70Z and N74 8HP90Z applications, but no BMW fitment record confirms it for the exact donor 8HP50Z. Substituting this flange would also change the axial stack and require validation of splines, retention, seal journal, installed height, housing clearance, and coupling geometry. Because the custom driveshaft can use a transmission-end section matched to the donor flange, the 110 mm substitution adds risk without a defined engineering benefit and is rejected for this design.
+The E38 transmission-end coupling and measured 8HP70 output flange both use a `110 mm` bolt circle with M12 fasteners. Verify the centering register, coupling-face geometry, fastener engagement, and axial clearance during trial fit, then retain the E38 transmission-end coupling. Retain the differential-end CV joint, BMW `26 11 1 229 772`, `94 mm`, `Z=34`, with six M10 fasteners, unless inspection requires replacement.
 
 ### Professional 8HP/E38 Driveshaft Fabrication
 
-The intended construction preserves the OEM E38 rear and centre assemblies and replaces only the required length at the gearbox end with the matching F3x 8HP50 front section. A qualified driveshaft specialist must select the exact cut locations and specify the joint, sleeve, tube, weld, and reinforcement design; do not prescribe reinforcement dimensions without the fabricator's material, load, and balancing data.
+Retain the complete E38 driveshaft and modify only the length of its forward shaft section. A qualified driveshaft specialist must select the cut location and specify the tube, weld, sleeve, and reinforcement design from the shaft material, dimensions, M67 torque, and calculated maximum shaft speed.
 
-1. Select a rear-wheel-drive F3x donor shaft from the same output-flange family as the exact 8HP50Z. Record the donor VIN and complete part number. Do not use an xDrive front propshaft.
-2. Give the complete F3x and E38 shafts to the specialist for assessment before either is cut.
-3. Install the complete drivetrain in its final mounted position and measure between the gearbox and differential at normal ride height, following the fabricator's required reference points and working-length allowance.
-4. Preserve the E38 rear shaft section, rear CV joint, centre joint, centre support, bearing, and their vehicle mounting relationship unless inspection shows that a component is unserviceable.
-5. Cut the E38 shaft only toward the front, gearbox end, at the location selected by the specialist.
-6. Cut or re-tube the matching F3x front shaft section to produce the required overall installed length and correct 8HP50Z gearbox connection.
-7. Add sleeves, tube transitions, weld preparation, and other reinforcements required by the fabricator's approved process for the shaft materials, diameters, M67 torque, and calculated maximum shaft speed.
-8. Establish joint phasing from actual joint geometry. Maintain correct spline engagement, plunge allowance, centre-bearing position and preload, and clearance through the full drivetrain movement range.
-9. Inspect CV joint `26 11 1 229 772`, its boot and lubricant, the `94 mm` differential flange, 34-tooth interface, six M10 knurled bolts, mating nuts, and sealing washer. Replace worn or damaged components.
-10. Inspect every retained joint, spline, bearing, carrier, boot, seal, tube, and fastener. Replace parts that exceed the applicable wear, damage, or runout limits; clean, lubricate, and refurbish accepted parts according to their specifications.
-11. After all fabrication and refurbishment, check straightness and runout and dynamically balance the complete two-piece driveshaft as one indexed assembly, including the centre support arrangement. Mark the balanced orientation and obtain the fabricator's maximum-speed and torque rating.
+1. Trial-fit the original E38 110 mm/M12 coupling to the 8HP70 output flange and verify bolt alignment, centering register, coupling-face contact, fastener engagement, and clearance.
+2. Install the complete drivetrain in its final mounted position and measure between the gearbox and differential at normal ride height using the fabricator's specified datums and working-length allowance.
+3. Give the complete E38 two-piece driveshaft and measured installation data to the specialist before cutting.
+4. Preserve the transmission-end coupling, rear shaft, rear CV joint, centre joint, centre support, bearing, and their indexed relationship unless inspection identifies an unserviceable component.
+5. Modify the forward shaft tube at the location selected by the specialist to achieve the required installed length. Do not alter the 110 mm/M12 transmission-end interface.
+6. Apply the fabricator's specified tube, sleeve, weld preparation, and reinforcement process.
+7. Preserve joint phasing and maintain the specified spline engagement, plunge allowance, centre-bearing position and preload, and clearance through the full drivetrain movement range.
+8. Inspect CV joint `26 11 1 229 772`, its boot and lubricant, the `94 mm` differential flange, 34-tooth interface, six M10 knurled bolts, mating nuts, and sealing washer. Replace worn or damaged components.
+9. Inspect every retained joint, spline, tube, coupling, and fastener. Inspect the centre-support bearing for noise, play, roughness, seal damage, and free rotation; inspect its rubber carrier and bracket for cracking, separation, distortion, and loss of stiffness. Replace components outside the applicable wear, damage, or runout limits.
+10. Check straightness and runout, then dynamically balance the complete two-piece driveshaft as one indexed assembly. Mark the balanced orientation and record the fabricator's maximum-speed and torque rating.
 
 > [!CAUTION]
 > A poorly aligned or unbalanced driveshaft can damage the transmission and differential and can fail dangerously at road speed.
@@ -250,19 +216,19 @@ The July 2001 E38 740d has a dedicated transmission-oil cooler circuit rather th
 - A5S 560Z cooler outlet pipe `17 22 2 248 642`
 - Four FPM O-rings `17 21 1 742 636`, size `10.82 x 1.78 mm`
 
-Retain the E38 air-to-oil cooler only if it passes inspection, pressure testing, and a professional contamination assessment. The original rigid pipes are transmission-specific and should not be forced onto the 8HP50. Replace or modify them with correctly supported ATF hose assemblies. If the 5HP30 failed internally or the cooler cannot be verified clean, replace the cooler and contaminated lines rather than risking debris entering the 8HP50.
+Retain the E38 air-to-oil cooler only if it passes inspection, pressure testing, and a professional contamination assessment. The original rigid pipes are transmission-specific and should not be forced onto the 8HP70. Replace or modify them with correctly supported ATF hose assemblies. If the 5HP30 failed internally or the cooler cannot be verified clean, replace the cooler and contaminated lines rather than risking debris entering the 8HP70.
 
 The selected circuit is:
 
 ```text
-8HP50 hot outlet -> full-flow bypass thermostat -> E38 oil cooler -> thermostat -> 8HP50 return
+8HP70 hot outlet -> full-flow bypass thermostat -> E38 oil cooler -> thermostat -> 8HP70 return
 ```
 
-Follow the markings and installation diagram supplied with the chosen adapter and thermostat; confirm the 8HP50 outlet and return ports instead of inferring direction from physical position. The thermostat must bypass the cooler during warm-up while preserving an unrestricted return path to the transmission.
+Follow the markings and installation diagram supplied with the chosen adapter and thermostat; confirm the 8HP70 outlet and return ports instead of inferring direction from physical position. The thermostat must bypass the cooler during warm-up while preserving an unrestricted return path to the transmission.
 
-### 8HP50 Cooler Adapter
+### 8HP70 Cooler Adapter
 
-Use an adapter made for the exact donor transmission casting. DomiWorks Type 1, SKU `22001001`, is the provisional choice only if donor inspection confirms its specified interface. Its published specification is:
+Use an adapter made for the exact donor transmission casting. The tagged BMW assembly confirms an N57-pattern 8HP70. DomiWorks Type 1, SKU `22001001`, remains the provisional choice until inspection confirms that the donor's cooler interface matches its specified interface. Its published specification is:
 
 - 8HP50 B58, 8HP70 N57, and 8HP45 N47 application
 - `17 mm` offset transmission bores with an M6 retaining bolt
@@ -271,17 +237,9 @@ Use an adapter made for the exact donor transmission casting. DomiWorks Type 1, 
 
 DomiWorks states that BMW 8HP cooler-port bore size, offset, and retaining-bolt geometry vary among transmissions. Before ordering, measure the exact donor's bore diameters, centre spacing/offset, bolt size and position, sealing arrangement, and available tunnel clearance. Confirm the choice with the adapter manufacturer using the donor tag and photographs.
 
-PMC `OC-BMW8HP` is an alternative published for BMW B58 8HP50, N57/N57N 8HP70, and B57 8HP76. It converts the transmission interface to two `M18x1.5-to-AN10` fittings. Treat this as a separate plumbing system: do not combine PMC's M18/AN10 parts with DomiWorks ORB-8 parts without deliberately specified reducers and a flow review.
-
 ### Thermostat and Lines
 
-Use BMW `17 22 7 592 723` / MAHLE-BEHR `TO 15 80`, a four-port, full-flow bypass thermostat, in this standalone air-to-oil circuit to shorten cold warm-up and prevent over-cooling. The shortened marking `7 592 723-02` or `759272302` on a used housing is a casting or production-revision marking, not the complete orderable BMW number. BMW-derived catalogs identify the assembly as "Thermostat, oil cooler line," and MAHLE-BEHR specifies an `80 degrees C` opening temperature. Published applications include BMW M-DCT vehicles and xDrive automatic-transmission vehicles; application history alone does not establish compatibility with this standalone 8HP50 circuit.
-
-The purchased thermostat includes the associated F80 LCI M3 GS7D36SG cooler lines. BMW catalogs the relevant flow and return sections as `17 22 2 284 548` and `17 22 2 284 549`. Their two gearbox-end connections use FPM O-rings `17 21 1 742 636`, specified as `10.82 x 1.78 mm`, and are retained together by one M8 x 28 screw `17 22 7 555 715`. The O-ring dimensions mean `10.82 mm` inside diameter and `1.78 mm` cross-section, giving a free outside diameter of `14.38 mm`; this indicates an approximately 14 mm-class GS7D36SG interface but does not specify its machined bore or spigot diameter.
-
-These DCT gearbox ends do not match the provisional DomiWorks adapter's `17 mm` 8HP50 bores. Retain the purchased lines as thermostat-end connection hardware only if their condition and routing are acceptable, and replace or adapt their DCT ends with purpose-made transitions for the selected 8HP50 adapter. Do not force the DCT ends into the 8HP50 ports or treat the O-ring's `14.38 mm` free outside diameter as an adapter machining dimension. Record the measured DCT end and 8HP50 adapter interfaces before specifying transitions.
-
-The BMW housing incorporates a thermostatic flow-control/bypass function as well as joining the cooler lines; used-parts descriptions that call it a junction block do not mean it is passive. Because it is an OEM thermostat used in the F80 M3 transmission-oil circuit, separate calibrated hydraulic characterization is not required for this conversion. The custom plumbing must still reproduce the original flow and return routing without introducing restrictive adapters. Before installation:
+Use BMW `17 22 7 592 723` / MAHLE-BEHR `TO 15 80`, a four-port full-flow bypass thermostat rated to open at `80 degrees C`. The purchased F80 M3 lines (`17 22 2 284 548` and `17 22 2 284 549`) may provide thermostat-end connections, but their GS7D36SG gearbox ends do not fit the provisional DomiWorks 8HP adapter. Measure both interfaces and use purpose-made, unrestricted transitions. Before installation:
 
 1. Inspect the purchased genuine or OE-supplier thermostat and its four matching OEM pipe ends for damage, contamination, corrosion, and leakage; do not clamp generic hose over its sockets.
 2. Identify all four ports from the original F80 M3 cooler-line arrangement and preserve the original flow, return, cooler, and bypass relationships in the adapted circuit.
@@ -330,6 +288,7 @@ Before and during commissioning:
 - [ ] Safety-critical fasteners torqued and inspected
 - [ ] OEM gearbox support, custom adapter, mounts, and fasteners inspected
 - [ ] Driveshaft professionally balanced and angles verified
+- [ ] Centre-support bearing, rubber carrier, mount position, and preload verified
 - [ ] Cooler flow, fluid level, and operating temperature verified
 - [ ] No leaks, abnormal noise, driveline vibration, or clutch slip
 - [ ] Post-test fastener, mount, driveshaft, and fluid inspection completed
@@ -340,14 +299,40 @@ Before and during commissioning:
 
 | Measurement | Value | Method/date |
 | --- | --- | --- |
-| Adapter plate thickness |  |  |
+| Donor tag photographs | [8HP70-Picture1.jpg](8HP70/8HP70-Picture1.jpg), [8HP70-Picture2.jpg](8HP70/8HP70-Picture2.jpg) | Reviewed 24 September 2026 |
+| Donor output-flange photograph | [8HP70-Picture3.jpg](8HP70/8HP70-Picture3.jpg) | Reviewed 24 September 2026 |
+| Donor bellhousing-side photograph | [8HP70-Picture4.jpg](8HP70/8HP70-Picture4.jpg) | Reviewed 25 September 2026; shows mating face, installed torque converter, and attached cooler lines |
+| Donor torque-converter marking photograph | [8HP70-Picture5.jpg](8HP70/8HP70-Picture5.jpg) | Reviewed 25 September 2026 |
+| BMW transmission designation | GA8HP70Z-WTT | Tag and BMW catalog cross-reference |
+| BMW transmission assembly number | 24 00 7 642 542 (`LU 7642542`) | Adhesive tag |
+| ZF model/type code | 8HP70 / WTT; sticker code `097WTT` | Cast and adhesive tags |
+| ZF serial number | 0257888 | Cast tag and barcode text `0257888WTT` |
+| ZF Stücklistennummer | 1087 004 050 / confirmation required | Split across the cast-tag fields |
+| Secondary ZF sticker code | 1087 010 | Adhesive tag |
+| Catalog application used for cross-check | F10 LCI 535d GA8HP70Z; actual donor VIN/application not yet recorded | BMW catalog |
+| Bellhousing pattern | N57 pattern | Tagged BMW assembly `24 00 7 642 542`, cataloged F10 LCI 535d N57 application, and bellhousing-side photograph; inspect for prior housing replacement or modification |
+| Donor output arrangement | Rear propshaft flexible-disc flange consistent with RWD | Catalog cross-check and output-flange photograph |
+| Opposite output-flange coupling-position centre distance / bolt circle | 110 mm | Ruler from centre of one hole to centre of opposite bolt in [8HP70-Picture3.jpg](8HP70/8HP70-Picture3.jpg); confirm directly before fabrication |
+| Mechatronics identification |  | Not visible in current tag photographs |
+| Torque-converter identification | Stamped first line `1087322397 8639`; ZF number formatted as `1087 322 397`; application and BMW service part number require confirmation | [8HP70-Picture5.jpg](8HP70/8HP70-Picture5.jpg) and owner-verified transcription |
+| Additional converter markings | Second line `250700004399`; right of QR code: `3 201311204001` and `V172` | Owner-verified photographic transcription; treat as production/traceability markings until decoded against ZF data |
+| Torque-converter production date | Year 2013; trace string likely indicates 20 November 2013, but the complete code has not been formally decoded | Separate `2013` stamp and `20131120` sequence in the QR-adjacent marking |
+| Engine-adapter manufacturer/kit | Adamat Performance M67-to-8HP, based on M60/M62/S62 kit / exact designation to be recorded |  |
+| Adapter plate material | AW7075-T651 base-kit specification / confirm M67 kit |  |
+| Adapter plate thickness | 50 mm base-kit specification / confirm and measure M67 kit |  |
+| Adamat drawing and revision |  |  |
+| Trigger flywheel identification |  |  |
+| Trigger flywheel material/weight | AlZnMg+Ti / 4.2 kg base-kit specification / confirm M67 kit |  |
+| Flywheel dynamic-balance report |  |  |
+| Kit torque rating | 2000 Nm base-kit claim / obtain M67 confirmation |  |
+| Trigger pattern/index accepted by original DME |  |  |
 | Crank register diameter |  |  |
 | Converter pilot diameter/depth |  |  |
 | Converter pull-forward distance |  |  |
 | Bellhousing runout |  |  |
 | Flexplate/converter runout |  |  |
 | Original 5HP30 mating-face-to-output-flange length |  |  |
-| Donor 8HP50 mating-face-to-output-flange length |  |  |
+| Donor F10 8HP70 mating-face-to-output-flange length |  |  |
 | Calculated output-position difference including adapter |  |  |
 | Trial-fitted output-position difference |  |  |
 | Original output-flange position |  |  |
@@ -359,10 +344,11 @@ Before and during commissioning:
 | Support-adapter fastener specification |  |  |
 | Rear CV joint part/condition | BMW 26 11 1 229 772 /  |  |
 | Rear CV-joint interface | 94 mm, Z=34, six M10 / verify |  |
-| F3x donor VIN/driveshaft part number |  |  |
+| Original E38 transmission-end coupling | LK=110 mm, M12 | Retained; verify centering register, face geometry, fastener engagement, and clearance on the 8HP70 |
+| Donor 8HP70 output flange | LK=110 mm, M12 | Measured; retain installed flange |
 | E38 rear/centre assembly condition |  |  |
 | Gearbox-to-differential measured length and datums |  |  |
-| E38 and F3x forward-section cut locations |  |  |
+| E38 and donor forward-section cut locations |  |  |
 | Tube joint, weld, and reinforcement specification |  |  |
 | Centre-bearing mount position/preload |  |  |
 | Final installed driveshaft length |  |  |
@@ -372,8 +358,8 @@ Before and during commissioning:
 | E38 cooler part/condition/pressure test | BMW 17 21 2 248 569 /  |  |
 | 8HP cooler-port bore/offset/bolt measurements |  |  |
 | Cooler adapter manufacturer/SKU/ports | DomiWorks 22001001 / ORB-8 provisional |  |
-| Donor 8HP50 ratio set verified from assembly number |  |  |
-| Thermostat model and rated range | BMW 17 22 7 592 723 / MAHLE-BEHR TO 15 80 / opens 80 degrees C, validation pending |  |
+| Donor 8HP70 ratio set verified from assembly number |  |  |
+| Thermostat model and rated range | BMW 17 22 7 592 723 / MAHLE-BEHR TO 15 80 / opens 80 degrees C |  |
 | Hose/fitting specification and minimum bore |  |  |
 | Cooler return flow and routing verified |  |  |
 | Cold warm-up and loaded temperature results |  |  |
@@ -383,34 +369,26 @@ Before and during commissioning:
 ## References
 
 - BMW E38 workshop information
-- ZF service information for the identified 8HP50Z assembly
+- BMW and ZF service information for the identified F10 8HP70 assembly
+- [BMW part 24 00 7 642 542, GA8HP70Z-WTT](https://www.realoem.com/bmw/enUS/partxref?q=24007642542)
+- [F10 LCI 535d GA8HP70Z catalog](https://www.realoem.com/bmw/enUS/showparts?id=5D52-EUR-01-2014-F10N-BMW-535d&diagId=24_1130)
 - Driveshaft manufacturer's measurement and installation requirements
-- [PMC Motorsport M62 to 8HP70/8HP75 adapter kit](https://pmcmotorsport-shop.com/product-eng-5072-Adapter-kit-BMW-V8-M62-BMW-ZF-8HP-8HP75-8HP70.html)
+- Adamat Performance, Adam Walczak, direct email correspondence regarding an M67-specific 8HP kit
+- [Adamat M60/M62/S62 to BMW ZF 8HP45/50/51/70/75 base kit](https://adamat.com.pl/en/adapter-bmw-v8-m62-m60-s62-to-bmw-zf-8hp45-8hp50-8hp51-8hp70-8hp75.html)
+- [Adamat M67 flywheel shown in an E38 740d 8HP installation at 6:34](https://www.youtube.com/watch?v=XtBa4phpDPs)
 - [RealOEM cross-reference for BMW gearbox support 22 32 1 096 427](https://www.realoem.com/bmw/enUS/partxref?q=22321096427)
 - [DomiWorks BMW 8HP transmission identification](https://www.domi-works.com/pages/identify-your-transmission-bmw-8hp)
 - [DomiWorks transmission technical information](https://www.domi-works.com/pages/transmission-information)
 - [BMW E38 automatic-transmission specifications](https://www.bmwman.ru/en/7er/E38/transmission/automatic/specifikacii-avtomaticheskoy-transmissii)
 - [ZF 5HP30 ratio reference](https://gearboxlist.com/zf/5hp30/)
-- [ZF 8HP50 ratio reference](https://gearboxlist.com/zf/8hp50/)
+- [ZF 8HP70 ratio reference](https://gearboxlist.com/zf/8hp70/)
 - [BMWfans E38 740d oil cooler and cooling pipes](https://bmwfans.info/parts-catalog/E38/Europe/740d-M67/L-A/jul2001/browse/radiator/oil_cooler_oil_cooling_pipe/)
 - [DomiWorks Type 1 N47/N57/B58 8HP oil-cooler adapter](https://www.domi-works.com/products/8hp-oil-cooler-adapter-n57)
-- [PMC OC-BMW8HP N57/B58 oil-cooler adapter](https://pmcmotorsport-shop.com/product-eng-6512-Oil-Cooler-Adapter-for-ZF-8HP-BMW-N57-B58-Transmission-M18x1-5-AN10-Adapters.html)
 - [BMWfans BMW 17 22 7 592 723 thermostat, oil cooler line](https://bmwfans.info/parts-catalog/17227592723)
 - [BMWfans F80 LCI M3 transmission-oil cooling lines and seals](https://bmwfans.info/parts-catalog/F80N/Europe/M3-S55/L-N/browse/radiator/transmission_oil_cooling/)
 - [MAHLE-BEHR TO 15 80 transmission-oil thermostat specification](https://www.autohausaz.com/pn/MH-TO1580)
 - [BimmerWorld BMW 17 22 7 592 723 transmission-oil thermostat function and applications](https://www.bimmerworld.com/Driveline-Shifter/Transmission-Service/OEM-Thermostat-for-Transmission-Oil-Cooler-17227592723.html)
 - [Mopar 68210018AA cooler-bypass valve](https://store.mopar.com/oem-parts/mopar-cooler-bypass-valve-68210018aa)
 - [BMWfans E38 740d driveshaft, centre bearing, and CV joint](https://bmwfans.info/parts-catalog/E38/Europe/740d-M67/L-A/jul2001/browse/drive_shaft/drive_shaft_cen_bearing_const_vel_joint/)
-- [RealOEM E38 740d A5S560Z output assembly](https://www.realoem.com/bmw/enUS/showparts?id=GE81-EUR-01-2001-E38-BMW-740d&diagId=24_0703)
-- [Hubauer BMW 24 20 1 423 752 application](https://www.hubauer-shop.de/en/output-flange-24201423752.html)
-- [BMWfans E38 740d A5S560Z output assembly](https://bmwfans.info/parts-catalog/E38/Europe/740d-M67/L-A/browse/automatic_transmission/a5s560z_output/)
-- [BMWfans N74 GA8HP90Z output catalog](https://bmwfans.info/parts-catalog/F01/Europe/760i-N74/L-A/browse/automatic_transmission/ga8hp90z_output/)
-- [Hubauer BMW 110 mm output-flange kit](https://www.hubauer-shop.de/en/repair-kit-output-flange-24207604955.html)
-- [Hubauer BMW 105 mm output-flange kit](https://www.hubauer-shop.de/en/repair-kit-output-flange-24207604961.html)
-- [Hubauer shared GA8HP70Z output-retention kit](https://www.hubauer-shop.de/en/repair-kit-output-24207588897.html)
-- [Maktrans shared 43-spline 8HP output flange](https://maktrans.net/output-shaft-flange-zf-8hp45-8hp50-8hp70-8hp75-height-78-mm-43-splines-4-mounting-holes-intoe-995-mm-8hp-flg-4h995)
 - [SpeedingParts 8HP swap guide](https://www.speedingparts.eu/i/guides-and-information/powertrain/8hp-gearbox-swap.html)
 - [Power Test driveshaft phasing guidance](https://powertestdyno.com/proper-driveshaft-phasing-and-alignment/)
-- James Scott Foley, direct Facebook response regarding his M67D44/8HP75 conversion, received 30 August 2026
-- [James Scott Foley's M67D44/8HP75 fitment post and comments in ZF 8HP Transmission Swap & Tech](https://www.facebook.com/groups/zf8hpswaptech/permalink/1037322348805229/)
-- Norbert Borkowski, PMC, email correspondence regarding M67 use of PMC product 5072, received 30 August 2026
