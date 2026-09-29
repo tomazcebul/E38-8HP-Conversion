@@ -21,7 +21,7 @@ This document is the high-level conversion plan and index. Detailed procedures, 
 | Item | Build-specific value |
 | --- | --- |
 | Vehicle | 2001 BMW E38 740d |
-| VIN | WBAGE81080DB84447 |
+| VIN | WBAGE81080... |
 | Engine | BMW M67B39 |
 | Engine-management architecture | Two BMW DDE 4.1 control units, master/slave communication over the dedicated CANP bus |
 | Bosch engine-control platform | Bosch EDC15C4 for both DDE 4.1 units; confirm from physical labels |
