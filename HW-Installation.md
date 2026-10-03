@@ -25,6 +25,9 @@ Read the project overview and record the exact donor transmission and converter 
 - BMW `17 22 7 592 723` / MAHLE-BEHR `TO 15 80` transmission-oil thermostat with matching line ends or purpose-made adapters, subject to correct routing and installation verification
 - ATF-rated hoses, crimps, fittings, line supports, abrasion protection, and heat protection sized for the verified cooler flow
 - New transmission fluid, oil pan/filter assembly, seals, and one-time-use hardware specified by ZF
+- New engine rear crankshaft seal: BMW `11 14 1 710 247` (`100 x 125 x 13 mm`) or `11 21 7 838 071` (`125 x 100 x 12 mm`), selected by VIN and verified dimensions
+- New torque-converter/front-pump seal: ZF `0734 300 296` (`53 x 71 x 7 mm`), subject to confirmation against ZF unit `1087 004 050`
+- New RWD output-drive repair kit: BMW `24 00 8 672 629` (supersedes `24 20 7 588 897`), listed for the F10 535d; the individual `39 x 72 x 8 mm` output seal is ZF `0750 111 470` / BMW `24 13 7 542 885`
 - Fabrication materials and exhaust parts required for clearance
 
 ## Tools and Facilities
@@ -55,6 +58,7 @@ Before dismantling the vehicle:
 5. Disconnect the selector mechanism, cooler lines, electrical connectors, starter, and torque-converter fasteners.
 6. Support the engine and transmission, remove the crossmember, and remove the original transmission.
 7. Inspect the rear crankshaft seal area, starter, ring gear, engine mounts, transmission tunnel, and exposed wiring.
+8. While access is unobstructed, replace the engine rear crankshaft seal and the 8HP70 torque-converter/front-pump and output-shaft seals. Confirm each seal by engine or transmission identification and dimensions before installation, and follow the applicable BMW and ZF procedures for installation depth and sealing-surface inspection. Do not substitute the `44 x 72 x 8 mm` ZF `0734 319 633` / BMW `24 13 7 519 344` output seal without confirming the output-shaft diameter; both rear-seal sizes are cataloged for transmissions in the wider 8HP70 family.
 
 Follow the BMW workshop manual for removal details and tightening procedures. Drain and dispose of fluids responsibly.
 
@@ -84,7 +88,9 @@ The design must establish:
 - Converter pilot diameter and engagement depth
 - Converter-to-flexplate bolt pattern and fastener access
 - Full converter seating in the transmission before installation
-- Correct converter pull-forward distance after the bellhousing is tightened
+- `4 mm` axial clearance between the flywheel and torque converter with the converter fully seated in the transmission
+- `4 mm` converter pull-forward distance after the bellhousing is tightened
+- `0.55 mm` air gap between each crankshaft-position sensor and the trigger flywheel
 - Adequate flexplate strength and axial flexibility
 - Suitable fastener material, engagement, locking method, and clearance
 
@@ -118,7 +124,7 @@ Request the following drawing data or written values from Adamat for the selecte
 1. Engine-side adapter bolt and dowel coordinates, dowel diameters, and register diameter/depth.
 2. Crankshaft bolt count, pitch-circle diameter, fastener size, locating register, flange stand-off, and flywheel mounting-face offset.
 3. Flywheel/flexplate part used, ring-gear tooth count and axial position, required starter part number and mounting position, and pinion engagement.
-4. Crankshaft-sensor type, target pattern, tooth count, index angle, air gap, and whether the M67 DDE can retain its original speed/reference signal.
+4. Crankshaft-sensor type, target pattern, tooth count, index angle, confirmation of the required `0.55 mm` air gap, and whether the M67 DDE can retain its original speed/reference signal.
 5. Exact compatible 8HP70 converter, converter pilot diameter/depth, mounting pattern, installed clearance, and specified pull-forward distance.
 6. Adapter thickness, bellhousing modifications, fastener lengths and grades, access for converter bolts, and required machining.
 7. Maximum rated engine torque and whether the supplied flywheel has been balanced independently or with a specified converter/crank assembly.
@@ -183,7 +189,7 @@ Confirm the actual output-flange position by trial-fitting the complete adapter,
 
 Because the effective F10 8HP70 output position is not yet established, measure the installed drivetrain before modifying the driveshaft. Retain the donor 8HP70 output flange and the complete original E38 two-piece driveshaft. Both transmission interfaces use a `110 mm` bolt circle with M12 fasteners; no donor driveshaft section is required. Adjust only the effective length of the E38 forward shaft section.
 
-Finalize the engine mounts, OEM support position, custom support adapter, transmission mounts, and differential position first. With the vehicle at normal ride height, measure the required installed length between the 8HP70 coupling face and differential interface using the driveshaft fabricator's specified datums and allowance. Supply the complete E38 shaft to the specialist. The specialist must establish the length correction, cut and weld locations, joint phasing, centre-bearing position and preload, spline engagement and plunge allowance, critical speed, torque capacity, runout, weld design, and final installed length. Dynamically balance the complete two-piece assembly after modification and refurbishment.
+Finalize the engine mounts, OEM support position, custom support adapter, transmission mounts, and differential position first. With the vehicle at normal ride height, measure the required installed length between the 8HP70 coupling face and differential interface using the driveshaft fabricator's specified datums and allowance. Supply the complete E38 shaft to the specialist. The specialist must establish the length correction, cut and weld locations, joint phasing, centre-bearing position, spline engagement and plunge allowance, critical speed, torque capacity, runout, weld design, and final installed length. Install the centre-support bearing with `4 mm` preload toward the engine. Dynamically balance the complete two-piece assembly after modification and refurbishment.
 
 The E38 transmission-end coupling and measured 8HP70 output flange both use a `110 mm` bolt circle with M12 fasteners. Verify the centering register, coupling-face geometry, fastener engagement, and axial clearance during trial fit, then retain the E38 transmission-end coupling. Retain the differential-end CV joint, BMW `26 11 1 229 772`, `94 mm`, `Z=34`, with six M10 fasteners, unless inspection requires replacement.
 
@@ -197,7 +203,7 @@ Retain the complete E38 driveshaft and modify only the length of its forward sha
 4. Preserve the transmission-end coupling, rear shaft, rear CV joint, centre joint, centre support, bearing, and their indexed relationship unless inspection identifies an unserviceable component.
 5. Modify the forward shaft tube at the location selected by the specialist to achieve the required installed length. Do not alter the 110 mm/M12 transmission-end interface.
 6. Apply the fabricator's specified tube, sleeve, weld preparation, and reinforcement process.
-7. Preserve joint phasing and maintain the specified spline engagement, plunge allowance, centre-bearing position and preload, and clearance through the full drivetrain movement range.
+7. Preserve joint phasing and maintain the specified spline engagement and plunge allowance. Before tightening the centre-support bracket, move the centre-support bearing and rubber carrier `4 mm` toward the engine from their unpreloaded position. Verify clearance through the full drivetrain movement range.
 8. Inspect CV joint `26 11 1 229 772`, its boot and lubricant, the `94 mm` differential flange, 34-tooth interface, six M10 knurled bolts, mating nuts, and sealing washer. Replace worn or damaged components.
 9. Inspect every retained joint, spline, tube, coupling, and fastener. Inspect the centre-support bearing for noise, play, roughness, seal damage, and free rotation; inspect its rubber carrier and bracket for cracking, separation, distortion, and loss of stiffness. Replace components outside the applicable wear, damage, or runout limits.
 10. Check straightness and runout, then dynamically balance the complete two-piece driveshaft as one indexed assembly. Mark the balanced orientation and record the fabricator's maximum-speed and torque rating.
@@ -261,14 +267,18 @@ Use hoses, crimps, seals, and fittings rated for the selected transmission fluid
 
 ## 7. Final Assembly and Fluid Fill
 
-1. Seat the torque converter fully in the transmission.
-2. Install the transmission without drawing it into place with bellhousing bolts.
-3. After tightening the bellhousing, measure converter pull-forward and check bellhousing and flywheel/converter runout.
-4. Tighten all fasteners to specifications for the actual components and mark safety-critical fasteners after inspection.
-5. Install the OEM gearbox support, custom support adapter, transmission mounts, driveshaft, cooler circuit, exhaust, heat shields, harness, and selector.
-6. Confirm wiring and hoses have adequate movement and cannot contact sharp or hot surfaces.
-7. Fill the transmission using the ZF procedure for the exact assembly, including fluid specification, vehicle level, engine-running gear cycling, and temperature window.
-8. Check for leaks before testing.
+1. Confirm that the engine rear crankshaft seal and the 8HP70 torque-converter/input and output-shaft seals have been replaced and are correctly seated.
+2. Fill the torque converter with the ZF-specified transmission fluid before installation.
+3. Seat the torque converter fully in the transmission.
+4. Install the transmission without drawing it into place with bellhousing bolts.
+5. After tightening the bellhousing and before fastening the converter to the flywheel, verify `4 mm` axial clearance between them with the converter still fully seated in the transmission.
+6. Pull the converter forward by `4 mm` to the flywheel, fasten it, and check bellhousing and flywheel/converter runout.
+7. Thoroughly clean each crankshaft-position sensor and its mounting surface, then verify a `0.55 mm` air gap between the sensor and trigger flywheel.
+8. Tighten all fasteners to specifications for the actual components and mark safety-critical fasteners after inspection.
+9. Install the OEM gearbox support, custom support adapter, transmission mounts, driveshaft, cooler circuit, exhaust, heat shields, harness, and selector.
+10. Confirm wiring and hoses have adequate movement and cannot contact sharp or hot surfaces.
+11. Fill the transmission using the ZF procedure for the exact assembly, including fluid specification, vehicle level, engine-running gear cycling, and temperature window.
+12. Check for leaks before testing.
 
 ## 8. Mechanical Validation
 
@@ -283,12 +293,15 @@ Before and during commissioning:
 
 - [ ] Transmission and converter identities recorded
 - [ ] Transmission torque/load suitability confirmed
+- [ ] Engine rear crankshaft, 8HP70 torque-converter/front-pump, and 8HP70 output-shaft seals verified by identification and dimensions, replaced, and inspected
 - [ ] Adapter concentricity and converter spacing measured
+- [ ] `4 mm` flywheel-to-converter clearance verified with the converter fully seated in the transmission
+- [ ] Crankshaft-position sensors and mounting surfaces cleaned; `0.55 mm` sensor-to-flywheel air gap verified
 - [ ] Rotating assembly runout and balance accepted
 - [ ] Safety-critical fasteners torqued and inspected
 - [ ] OEM gearbox support, custom adapter, mounts, and fasteners inspected
 - [ ] Driveshaft professionally balanced and angles verified
-- [ ] Centre-support bearing, rubber carrier, mount position, and preload verified
+- [ ] Centre-support bearing and rubber carrier inspected; bracket preloaded `4 mm` toward the engine and tightened
 - [ ] Cooler flow, fluid level, and operating temperature verified
 - [ ] No leaks, abnormal noise, driveline vibration, or clutch slip
 - [ ] Post-test fastener, mount, driveshaft, and fluid inspection completed
@@ -326,9 +339,10 @@ Before and during commissioning:
 | Flywheel dynamic-balance report |  |  |
 | Kit torque rating | 2000 Nm base-kit claim / obtain M67 confirmation |  |
 | Trigger pattern/index accepted by original DME |  |  |
+| Crankshaft-position sensor-to-flywheel air gap | Required: 0.55 mm |  |
 | Crank register diameter |  |  |
 | Converter pilot diameter/depth |  |  |
-| Converter pull-forward distance |  |  |
+| Converter pull-forward distance | Required: 4 mm |  |
 | Bellhousing runout |  |  |
 | Flexplate/converter runout |  |  |
 | Original 5HP30 mating-face-to-output-flange length |  |  |
@@ -350,7 +364,7 @@ Before and during commissioning:
 | Gearbox-to-differential measured length and datums |  |  |
 | E38 and donor forward-section cut locations |  |  |
 | Tube joint, weld, and reinforcement specification |  |  |
-| Centre-bearing mount position/preload |  |  |
+| Centre-bearing mount position/preload | Required: 4 mm toward engine |  |
 | Final installed driveshaft length |  |  |
 | Dynamic-balance report and indexed orientation |  |  |
 | Fabricator maximum-speed/torque rating |  |  |
@@ -382,6 +396,9 @@ Before and during commissioning:
 - [BMW E38 automatic-transmission specifications](https://www.bmwman.ru/en/7er/E38/transmission/automatic/specifikacii-avtomaticheskoy-transmissii)
 - [ZF 5HP30 ratio reference](https://gearboxlist.com/zf/5hp30/)
 - [ZF 8HP70 ratio reference](https://gearboxlist.com/zf/8hp70/)
+- [ZF 8HP45/70/95 front-pump seal 0734 300 296](https://www.sussexautos.com/products/8hp45-8hp70-8hp95-zf-oem-pump-seal-od-71-00mm-id-53-00mm)
+- [BMW F10 535d RWD output-drive repair kit 24 00 8 672 629](https://parts.bmwnorthwest.com/p/BMW__535d/Repair-kit--output-drive/90855022/24008672629.html)
+- [ZF 8HP45/70/75 output-shaft seal 0750 111 470](https://www.sussexautos.com/products/8hp45-8hp70-8hp75-output-shaft-seal-0750-111-470)
 - [BMWfans E38 740d oil cooler and cooling pipes](https://bmwfans.info/parts-catalog/E38/Europe/740d-M67/L-A/jul2001/browse/radiator/oil_cooler_oil_cooling_pipe/)
 - [DomiWorks Type 1 N47/N57/B58 8HP oil-cooler adapter](https://www.domi-works.com/products/8hp-oil-cooler-adapter-n57)
 - [BMWfans BMW 17 22 7 592 723 thermostat, oil cooler line](https://bmwfans.info/parts-catalog/17227592723)
