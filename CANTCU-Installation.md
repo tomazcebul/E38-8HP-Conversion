@@ -2,7 +2,7 @@
 
 ## Scope
 
-This document covers installation and wiring of CANTCU hardware revision 1.9, serial number 468B, in the E38 740d. It includes power, grounds, transmission wiring, selector integration, CAN wiring, interlocks, reverse lights, and electrical validation.
+This document covers installation and wiring of CANTCU hardware revision 1.9, serial number 468B, in the E38 740d. It includes power, grounds, transmission wiring, both selector options, CAN wiring, interlocks, reverse lights, and electrical validation.
 
 Race+ is the selected software and installation baseline. CANformance identifies Race+ as the preferred solution for new supported 8HP installations and lists ZF 8HP70 as supported. The current [Race+ installation instructions](https://wiki.canformance.net/CANTCU/software/race-plus/installation) are controlling for transmission power, CAN, WUP, and diagnostics. Also use the official pages for the [Race+ overview](https://wiki.canformance.net/CANTCU/software/race-plus), exact [vehicle/ECU integration](https://wiki.canformance.net/CANTCU/integrations/supportedECUs), [shifter](https://wiki.canformance.net/CANTCU/integrations/supportedshifters), and [CANTCU pinout](https://wiki.canformance.net/CANTCU/hardware/CANTCU_pinout). If this guide conflicts with current CANformance documentation, follow CANformance and record the revision used.
 
@@ -11,7 +11,8 @@ Use only the wiring diagram for the exact controller hardware and firmware. Do n
 ## Components and Tools
 
 - CANTCU controller and compatible wiring harness
-- BMW F-series 8HP GWS `61 31 9 296 898`, matching connector, donor loom, and mounting parts
+- Selector Option A: BMW F-series 8HP GWS `61 31 9 296 898`, matching connector, donor loom, and mounting parts
+- Selector Option B: original E38 Steptronic selector, four-channel 0-5 V S227 contact conditioning or a verified 5 V LED conversion of E82, and the wiring specified in [E38 Selector Integration](E38-Selector.md)
 - Brake-pedal signal and optional mode, manual-shift, or paddle switches
 - A dedicated 15 A branch fuse and conductors rated for the calculated continuous current, inrush current, and installation temperature
 - Laptop and CANformance 8HP TCM Tool for stock backup, Race+ programming, and diagnostics through CANTCU
@@ -36,7 +37,7 @@ Select a dry controller location protected from heat, vibration, water, and phys
 
 The installation requires:
 
-- Fused main supply for CANTCU, the transmission, and the F-series GWS
+- Fused main supply for CANTCU, the transmission, and the selected selector interface where required
 - Ignition-switched signal for wake-up control
 - Clean power and controller/sensor grounds as specified
 - 8HP mechatronics power and communication wiring
@@ -51,11 +52,13 @@ The installation requires:
 
 Confirm fuse ratings, wire sizes, relay ratings, connector seals, and grounding requirements from the current CANTCU documentation before construction.
 
-### Selected Selector
+### Selector Options
 
-Use BMW F-series 8HP GWS `61 31 9 296 898`. Confirm the exact variant, 10-pin connector, pinout, and CANTCU `BMW F-Series 8HP` profile before fabrication. Install an engineered console bracket that preserves full lever travel, return-to-centre operation, Park-button access, connector clearance, and strain relief.
+**Option A - BMW F-series 8HP GWS:** Use BMW F-series 8HP GWS `61 31 9 296 898`. This remains the supported installation baseline. Confirm the exact variant, 10-pin connector, pinout, and CANTCU `BMW F-Series 8HP` profile before fabrication. Install an engineered console bracket that preserves full lever travel, return-to-centre operation, Park-button access, connector clearance, and strain relief.
 
-The original E38 selector and Bowden cable are not retained as transmission controls. Implement the Park/Neutral start authorization, reverse lamps, and gear indication from confirmed CANTCU/transmission state, not lever position.
+**Option B - original E38 Steptronic selector:** Retain the original selector, shift-lock, manual gate, and up/down contacts. Use the E38 S227 P/R/N/D contacts through four protected 0-5 V conditioning channels, optionally integrated into a verified 5 V LED conversion of E82, and use the ground-switching S224 Steptronic contacts through the CANformance Universal DIN/CAN Shifter profile, as specified in [E38 Selector Integration](E38-Selector.md). This avoids the Bowden cable, S8532 coded switch, and 12 V L1-L4 interface. After removing AGS, reuse suitable original conductors by depinning and reterminating their former A7000 ends for CANTCU. Verify isolation from vehicle voltage, abandoned branches, original grounds, and every unmodified E82 12 V circuit before connecting the new controller.
+
+For either option, implement Park/Neutral start authorization, reverse lamps, and gear indication from confirmed CANTCU/transmission state, not unverified lever position alone. Record the selected option and do not install wiring for both selector command paths concurrently.
 
 ## 3. Install Power, Grounds, and Harness
 
@@ -76,26 +79,26 @@ flowchart TB
     F15 --> JUNCTION["Race+ power distribution"]
     JUNCTION -->|"2.5 mm2"| CANTCU["CANTCU A1"]
     JUNCTION -->|"2.5 mm2"| TCM["8HP pin 13"]
-    JUNCTION -->|"0.5 mm2"| GWS["GWS pin 10"]
+    JUNCTION -->|"0.5 mm2, Option A"| GWS["GWS pin 10"]
 
     CANTCU -. "C4 WUP, 0.5 mm2" .-> TCMWUP["8HP pin 9"]
-    CANTCU -. "C4 WUP, 0.5 mm2" .-> GWSWUP["GWS pin 7"]
+    CANTCU -. "C4 WUP, 0.5 mm2, Option A" .-> GWSWUP["GWS pin 7"]
 
     GROUND["Verified chassis ground"] -->|"2.5 mm2"| CANTCUGND["CANTCU A8"]
     GROUND -->|"2.5 mm2"| TCMGND["8HP pin 14"]
-    GROUND -->|"0.5 mm2"| GWSGND["GWS pin 8"]
+    GROUND -->|"0.5 mm2, Option A"| GWSGND["GWS pin 8"]
 ```
 
 The upper part of the diagram reproduces the relevant AGS portion of the supplied NewTIS circuit: F4 feeds X8680 pin 8, the 4.0 mm2 `U_HR` conductor reaches splice X6821, and X6821 supplies two separate 1.5 mm2 `U_UBR` branches to X70001 pins 8 and 9. The lower Race+ branch is a conversion addition, not part of the original diagram.
 
-F4 protects the original 4.0 mm2 `U_HR` feed and the two original 1.5 mm2 `U_UBR` branches. After removing A7000, combine the X70001 pin 8 and pin 9 conductors in a rated two-into-one automotive splice, place the new 15 A fuse immediately downstream of that splice, and feed the Race+ distribution from the fuse. Both branches originate at X6821 and have the same gauge and function, but each conductor, terminal, and splice must be intact and verified. The CANTCU C4 WUP connections are control outputs, not additional power feeds.
+F4 protects the original 4.0 mm2 `U_HR` feed and the two original 1.5 mm2 `U_UBR` branches. After removing A7000, combine the X70001 pin 8 and pin 9 conductors in a rated two-into-one automotive splice, place the new 15 A fuse immediately downstream of that splice, and feed the Race+ distribution from the fuse. Both branches originate at X6821 and have the same gauge and function, but each conductor, terminal, and splice must be intact and verified. The GWS branches shown apply only to selector Option A. The CANTCU C4 WUP connections are control outputs, not additional power feeds.
 
 1. Disconnect the battery according to BMW service procedures.
 2. Mount CANTCU in a dry location while retaining access to the USB-B port on its top cover. CANTCU cannot be powered through USB.
-3. Connect controller supply to pin A1 and controller ground to pin A8. Combine the former X70001 pin 8 and pin 9 `U_UBR` conductors, then take the common switched CANTCU, transmission, and GWS supply through a new downstream 15 A branch fuse.
-4. Connect the transmission and shifter wake-up inputs to the CANTCU WUP output on pin C4. WUP must be active only with ignition on.
+3. Connect controller supply to pin A1 and controller ground to pin A8. Combine the former X70001 pin 8 and pin 9 `U_UBR` conductors, then take the common switched CANTCU and transmission supply through a new downstream 15 A branch fuse; also supply the GWS from this branch when using selector Option A.
+4. Connect the transmission wake-up input to the CANTCU WUP output on pin C4. For selector Option A, connect the GWS wake-up input to the same output. WUP must be active only with ignition on.
 5. NewTIS shows terminal 87 feeding 30 A fuse F4 in engine-electronics fuse carrier A8680. F4 output X8680 pin 8 feeds splice X6821 through a 4.0 mm2 `U_HR` conductor. X6821 supplies X70001 pins 8 and 9 through separate 1.5 mm2 `U_UBR` conductors.
-6. Remove the two 1.5 mm2 `U_UBR` conductors from the obsolete AGS connection and join them with a crimped splice explicitly rated for two 1.5 mm2 inputs and the selected output conductor. Install a dedicated 15 A fuse immediately after the splice. From that fuse, supply CANTCU A1 and 8HP pin 13 with new 2.5 mm2 conductors and GWS pin 10 with a 0.5 mm2 conductor. The 30 A F4 protects the original feed and original branches; it is too large to be the sole protection for the new Race+ distribution.
+6. Remove the two 1.5 mm2 `U_UBR` conductors from the obsolete AGS connection and join them with a crimped splice explicitly rated for two 1.5 mm2 inputs and the selected output conductor. Install a dedicated 15 A fuse immediately after the splice. From that fuse, supply CANTCU A1 and 8HP pin 13 with new 2.5 mm2 conductors. For selector Option A, also supply GWS pin 10 with a 0.5 mm2 conductor. The 30 A F4 protects the original feed and original branches; it is too large to be the sole protection for the new Race+ distribution.
 7. Do not install the additional BMW load relay or HELLA delay timer `5HE 996 152-131`. Race+ saves adaptations during normal operation and CANformance states that a time-delay relay is not required.
 8. Confirm that `U_HR` and CANTCU C4 WUP become active and inactive in the intended key states without backfeeding any E38 circuit. Record remaining `U_HR` loads and loaded voltage at cold start and maximum electrical load. A short DDE-controlled `U_HR` hold after key-off is acceptable only if CANformance confirms it and repeated shutdown tests show clean module behavior.
 9. Use pin C2 only as the documented +5 V sensor supply and pin C7 as sensor ground.
@@ -168,12 +171,13 @@ Install and verify:
 - Mode switch and display, where fitted
 - Park/Neutral start-enable output or interface
 - Reverse-light output through a suitable relay or vehicle interface
+- Option B shift-lock relay command on B1/DOUT1, using a validated composite command that reproduces the OEM P/N, brake, road-speed, engine-speed, and approximately 0.5 s timing logic
 
 Pins B6, B7, C5, and C6 are ground-triggered digital inputs and must only be switched to ground. Pins B1, B8, C1, and C8 are ground-switching digital outputs rated for a maximum load of 0.5 A each; use a relay for larger loads.
 
 The start interlock must fail safely. The engine must not crank when a drive range is selected. Reverse lamps must follow actual confirmed transmission state rather than an unverified command alone.
 
-### F-Series 8HP GWS Wiring
+### Option A - F-Series 8HP GWS Wiring
 
 The supported F-series GWS operates at `500 kbit/s`. For an F-series 8HP transmission, connect it to both CANTCU transmission buses exactly as shown in the current CANformance diagram. CAN1 and CAN2 already have `120 ohm` termination inside CANTCU; measure the completed, unpowered buses and add only the termination required by the documented topology.
 
@@ -206,6 +210,14 @@ The original X70003 selector-area wiring can provide routes and, where suitable,
 <!-- markdownlint-enable MD060 -->
 
 Do not use the existing selector signal wires as CAN pairs merely because they reach the console. If they cannot be physically reworked and verified as twisted pairs, replace the four CAN conductors while retaining suitable existing +12 V, ground, and WUP wires. Do not identify any connector by wire colour alone. Confirm cavity numbering on the exact housing, keep CAN1 and CAN2 as separate networks, and perform continuity and isolation tests before connecting the GWS. Mount the monostable GWS so its full travel, side movement, release-to-centre action, Park button, connector, and strain relief operate without console interference.
+
+### Option B - Original E38 Steptronic Selector
+
+Option B retains the original E38 lever, S227 P/R/N/D contacts, S224 manual-gate and up/down contacts, and shift-lock mechanism. It does not mechanically operate the 8HP transmission and does not use the Bowden cable, transmission-mounted S8532 switch, or L1-L4 decoder.
+
+Remove the original AGS and retain its disconnected A7000 harness plugs as the wire-identification and reuse points. Reuse suitable selector conductors only after verifying their end-to-end route, absence of hidden branches, cross-section, insulation, and switch behavior; depin and fit the correct CANTCU terminal where practical, or use an approved sealed splice when necessary. Configure B2-B5 as four independent `AIN to DIN` channels for P, R, N, and D through automotive-rated 0-5 V pull-up/conditioning circuits. Configure B6 as the maintained ground-switching manual-gate input and B7/C5 as the momentary strike-down/strike-up inputs; require manual mode to gate both strike inputs. Leave C6/DIN4 unused by default. Race+ should derive kickdown behavior from validated pedal position/driver demand through the DDE4.1 CAN integration; use the former X70003 pin 17 conductor on C6 as `Kickdown Active` only if CANformance confirms that a separate external request is required or deliberately retained. Brake status also remains expected from the validated DDE4.1 CAN signal. Use C7 as the isolated selector return. Follow the connector-level allocation, conditioning requirements, truth-table measurements, and fault tests in [E38 Selector Integration](E38-Selector.md).
+
+The normal allocation uses all four analog inputs and three digital inputs: B6/C5/B7 for S224 manual controls, with C6 spare. The 8HP itself does not require a dedicated kick-down-switch wire. Modern implementations normally obtain pedal position/driver demand through the engine controller and CAN, although some vehicles retain a pedal detent or kickdown signal at vehicle level. Confirm that the DDE4.1 integration supplies a valid full-range pedal signal and that Race+ full-pedal/downshift behavior is correctly calibrated. If CANformance requires or approves a separate external request, measure the former X70003 pin 17 conductor in every switch and key state and connect it to C6 only after proving it is a ground-referenced dry-switch path with no voltage or unintended branch. The brake input should also come from the validated M67 DDE 4.1 CAN signal. Confirm its exact message, bit, polarity, update rate, timeout behavior, and dual-DDE source with CANformance. Obtain CANformance confirmation of `AIN to DIN` thresholds and the behavior for no range, multiple ranges, and a range line shorted to ground before commissioning. Do not connect E82, any 12 V selector circuit, or the raw E38 brake signal directly to a CANTCU input.
 
 ## 5. Integrate CAN
 
@@ -258,14 +270,14 @@ NewTIS gives the following used assignments for X70003; pins 4-8, 11-16, and 21-
 | 3 | Output | Gearshift-position signal L2 | EWS control unit | Replace with a fail-safe Park/Neutral authorization based on confirmed transmission state |
 | 9 | Input | Gearshift-position signal L6 | Program switch | Candidate GWS CAN2 conductor; reuse only as part of a verified twisted pair |
 | 10 | Input | Gearshift-position signal L5 | Program switch | Candidate GWS CAN2 conductor; reuse only as part of a verified twisted pair |
-| 17 | Input | Kick-down signal | Kick-down switch | Optional retained input after voltage and polarity are verified |
+| 17 | Input | Kick-down signal | Kick-down switch | Not required for the normal CAN pedal-demand strategy; retain isolated as an optional C6/DIN4 `Kickdown Active` input only with CANformance approval |
 | 18 | Output | Gear-indicator signal | Gear-indicator light | Candidate GWS WUP conductor; isolate from the original indicator |
 | 19 | Input | Steptronic upshift signal | Steptronic switch | Candidate GWS CAN1 conductor; reuse only as part of a verified twisted pair |
 | 20 | Input | Steptronic back/downshift signal | Steptronic switch | Candidate GWS CAN1 conductor; reuse only as part of a verified twisted pair |
 
 <!-- markdownlint-enable MD060 -->
 
-The F-series GWS supplies range and manual-mode requests over CAN. Repurpose only the conductors listed in the GWS schedule; isolate all remaining selector circuits. Implement EWS Park/Neutral authorization, reverse lamps, and gear indication from confirmed CANTCU/transmission state.
+For selector Option A, the F-series GWS supplies range and manual-mode requests over CAN. Repurpose only the conductors listed in the GWS schedule and isolate all remaining original selector circuits. For Option B, follow the dedicated E38 selector input schedule and acceptance tests instead. With either option, implement EWS Park/Neutral authorization, reverse lamps, and gear indication from confirmed CANTCU/transmission state.
 
 NewTIS gives the following used assignments for X70004; pins 1, 9, 10, 15, 19, 20, 25, 29, 30, 35, 39, and 40 are not used:
 
@@ -314,7 +326,7 @@ Preserve and label all three disconnected AGS plugs until every retained vehicle
 
 CANformance lists torque-based control and cuts for the BMW E38/39/46/53/83 and standalone EDC15 integrations, but marks blips as `1*`. Its footnote states that blips are available only on specific ECUs through SMG variant coding or custom DME/DDE software and identifies EDC15 as requiring a custom-software route. Therefore, native throttle blips are not available from the stock M67 EDC15C4 DDEs. Keep CANTCU blip requests disabled unless a supplier confirms compatible custom software for both DDE 4.1 units and CANformance confirms the complete command path and fault behavior.
 
-With Race+, CAN1 carries the transmission and the F-series GWS PTCAN connection. CAN2 is required only by the F-series GWS PTCAN2 connection; it does not connect to the transmission. CAN1 and CAN2 have built-in 120-ohm termination. CAN3 is used for the master-DDE connection and has no built-in termination. Verify voltage levels, bitrate, identifiers, scaling, byte order, update rate, and bus termination using CANformance documentation or direct measurement.
+With Race+, CAN1 carries the transmission. For selector Option A, CAN1 also carries the F-series GWS PTCAN connection and CAN2 carries its PTCAN2 connection; CAN2 does not connect to the transmission. Option B uses only local CANTCU analog and digital inputs and adds no selector CAN traffic. CAN1 and CAN2 have built-in 120-ohm termination. CAN3 is used for the master-DDE connection and has no built-in termination. Verify voltage levels, bitrate, identifiers, scaling, byte order, update rate, and bus termination using CANformance documentation or direct measurement.
 
 <!-- markdownlint-disable MD060 -->
 
@@ -322,7 +334,7 @@ With Race+, CAN1 carries the transmission and the F-series GWS PTCAN connection.
 | --- | --- | --- |
 | Engine speed | Engine ECU/CAN or conditioned hardwire | To be confirmed |
 | Accelerator position/load | Engine ECU/CAN | To be confirmed |
-| Brake applied | Brake switch or CAN | To be confirmed |
+| Brake applied | M67 DDE 4.1 CAN signal | Message, bit, polarity, update rate, and timeout to be confirmed |
 | Individual/average wheel speed | ABS/DSC | To be confirmed |
 | Engine coolant temperature | Engine ECU/CAN | To be confirmed |
 | Requested engine torque reduction | CANTCU to engine ECU or alternative strategy | To be confirmed |
@@ -377,7 +389,7 @@ Proceed to static commissioning only after loading and checking a conservative c
 - [ ] Harness secured, sealed, and protected from heat and abrasion
 - [ ] CAN resistance and signal integrity accepted
 - [ ] CAN communication stable with no new bus faults
-- [ ] Selector BMW part number, connector, CANTCU profile, and firmware support recorded
+- [ ] Selector option, hardware/interface, CANTCU profile or input map, and firmware support recorded
 - [ ] Selector direction and indicated state agree
 - [ ] Selector communication/input fault tests produce no unintended range request
 - [ ] Brake signal and manual controls operate correctly
@@ -409,18 +421,26 @@ Proceed to static commissioning only after loading and checking a conservative c
 | DDE diagnostic variant `DDE41KRO` | Master X2412/CAN3 or slave CANP, according to verified role | BMW DDE 4.1 / Bosch EDC15C4 | Record BMW number, Bosch number, hardware/software index, and master/slave role; do not assign from the variant name alone |
 | DDE diagnostic variant `DDE41KLO` | Master X2412/CAN3 or slave CANP, according to verified role | BMW DDE 4.1 / Bosch EDC15C4 | Record BMW number, Bosch number, hardware/software index, and master/slave role; do not assign from the variant name alone |
 | Race+ diagnostics/programming | Through CANTCU | CANTCU Configurator and 8HP TCM Tool | Follow the current tool procedure; no separate transmission OBD connector |
-| Brake input |  |  |  |
+| Brake input | CAN input | M67 DDE 4.1 brake-status signal | Record message, bit, polarity, update rate, timeout, and missing-signal behavior |
+| Pedal demand/kickdown | DDE4.1 CAN input | Validated accelerator-pedal position/driver-demand signal | Preferred implementation; record range, scaling, update rate, timeout, and full-pedal downshift behavior |
+| Optional external kickdown | C6/DIN4 | Reterminated former X70003 pin 17 conductor from the original kick-down switch | Normally unused; configure as `Kickdown Active` only with CANformance approval and record continuity, absence of branches/voltage, polarity, debounce, and fault tests |
+| Option B shift-lock command | B1/DOUT1 | Automotive relay coil, then Y19 through rated relay contacts | B1 active means validated release request; use `CAN / External Trigger`, a complete combined realtime value, or a dedicated CANformance function because the two-condition editor cannot reproduce the separate OEM P/N, brake, speed, RPM, and timing conditions |
 | Reverse output |  |  |  |
 | Park/Neutral output |  |  |  |
 | Original EWS P/N authorization |  | AGS X70003 pin 3 circuit | Replace with fail-safe authorization based on confirmed transmission state; verify EWS interface |
 | Original gear-indicator circuit |  | AGS X70003 pin 18 circuit | Requires CANTCU/vehicle interface; do not drive from an unrated output |
-| Selector type/profile |  | BMW F-series 8HP GWS | Confirm exact CANTCU profile |
-| Selector BMW part/connector |  | BMW `61 31 9 296 898` / connector to be recorded | Confirm variant, pin count, and pinout |
-| GWS +12 V |  | GWS pin 10; candidate reuse X70003 pin 2 conductor | 0.5 mm2 from fused combined `U_UBR` branch |
-| GWS ground |  | GWS pin 8; candidate reuse X70003 pin 1 conductor | Verify loaded voltage drop |
-| GWS WUP | C4 | GWS pin 7; candidate reuse X70003 pin 18 conductor | Isolate original gear indicator |
-| GWS CAN1 High/Low | A2/A3 | GWS pins 4/3; candidate route X70003 pins 19/20 | Must be a verified 0.5 mm2 twisted pair; otherwise install new pair |
-| GWS CAN2 High/Low | A4/A5 | GWS pins 6/5; candidate route X70003 pins 9/10 | Must be a verified 0.5 mm2 twisted pair; otherwise install new pair |
+| Selector type/profile |  | Selected Option A GWS profile or Option B Universal Shifter profile/input map | Confirm exact CANTCU configuration |
+| Selected selector option |  | Option A: F-series GWS / Option B: original E38 Steptronic | Record one completed command path only |
+| Selector BMW part/connector |  | Option A: BMW `61 31 9 296 898`; Option B: original E38 selector identity to be recorded | Confirm variant, connector, pinout, and interface |
+| Option B S227 P/R/N/D | B2/B3/B4/B5 | E82 X1599 pins 2/3/4/5 through four 0-5 V conditioning channels, either separate or integrated into a verified 5 V LED conversion of E82 | `AIN to DIN`; each channel requires an explicit linear pull-up independent of its LED branch; record regulator limits, resistor values, open/closed voltages, wetting current, thresholds, hysteresis, and fault behavior |
+| Option B S227 common | C7 | E82 X1599 pin 1 after isolation from the original E82 12 V and chassis-ground paths | Sensor-ground return only; include only CANformance-approved conditioner and LED current |
+| Option B S224 mode/down/up | B6/B7/C5 | S224 X1561 pins 4/2/3; pin 1 common to C7 | Maintained manual-gate DIN1 plus momentary strike-down DIN2 and strike-up DIN3; up/down valid only while manual gate is active |
+| Option B brake | CAN input | M67 DDE 4.1 brake-status signal | No raw E38 12 V brake connection; record exact CAN mapping and timeout |
+| Option A GWS +12 V |  | GWS pin 10; candidate reuse X70003 pin 2 conductor | 0.5 mm2 from fused combined `U_UBR` branch |
+| Option A GWS ground |  | GWS pin 8; candidate reuse X70003 pin 1 conductor | Verify loaded voltage drop |
+| Option A GWS WUP | C4 | GWS pin 7; candidate reuse X70003 pin 18 conductor | Isolate original gear indicator |
+| Option A GWS CAN1 High/Low | A2/A3 | GWS pins 4/3; candidate route X70003 pins 19/20 | Must be a verified 0.5 mm2 twisted pair; otherwise install new pair |
+| Option A GWS CAN2 High/Low | A4/A5 | GWS pins 6/5; candidate route X70003 pins 9/10 | Must be a verified 0.5 mm2 twisted pair; otherwise install new pair |
 
 <!-- markdownlint-enable MD060 -->
 
@@ -438,6 +458,7 @@ Proceed to static commissioning only after loading and checking a conservative c
 - [CANformance supported shifters](https://wiki.canformance.net/CANTCU/integrations/supportedshifters)
 - [CANformance BMW F-Series 8HP shifter](https://wiki.canformance.net/CANTCU/integrations/supportedshifters/Fxx-8HP)
 - [CANformance input configuration](https://wiki.canformance.net/CANTCU/software/config/inputcfg)
+- [E38 Selector Integration](E38-Selector.md) - Option B design, wiring, fail-safe requirements, and acceptance tests
 - [NewTIS A2410 DDE control unit I/master](https://www.newtis.info/tisv2/a/en/e38-740d-lim/ZL7ctjS) - identifies master-DDE connector X2412 and the former AGS CAN connection
 - [NewTIS A7000 AGS transmission control unit](https://www.newtis.info/tisv2/a/en/e38-740d-lim/YqwE3pY) - identifies original AGS connectors X70001, X70003, and X70004
 - [BMW Service Training: Diesel Engines M57/M67 Common Rail](https://pdfcoffee.com/m57enpdf-pdf-free.html) - identifies dual DDE 4.1 master/slave control units and the CANP link for the M67

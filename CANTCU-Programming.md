@@ -17,6 +17,8 @@ This document specifies Race+ backup, programming, configuration, commissioning,
 - BMW/Bosch identifiers, hardware/software indices, and confirmed master/slave role for both DDE units
 - CANformance-approved engine-data, engine-cut, and torque-reduction strategy for the dual-DDE arrangement
 - EDC15C4 blip strategy: disabled with stock DDE software, or documented custom software validated on both DDE units
+- Selected selector implementation: Option A, BMW F-series 8HP GWS; or Option B, original E38 Steptronic selector with its validated interface
+- Brake input source: validated M67 DDE 4.1 CAN signal; exact message, bit, polarity, update rate, and timeout behavior to be recorded
 - Differential ratio `2.65`
 - Measured tyre rolling circumference
 - CANTCU configuration interface and laptop
@@ -54,6 +56,7 @@ Verify every item against the exact firmware documentation:
 - Selector firmware profile and CAN-bus assignment
 - Brake input polarity
 - Reverse and Park/Neutral output behavior
+- Option B B1/DOUT1 shift-lock composite command, including OEM P/N, brake, road-speed, engine-speed, approximately 0.5 s timing, Y19 polarity, relay-contact selection, and missing-data behavior
 - Engine torque model, torque limits, and torque-reduction strategy
 - Engine-cut behavior and dual-DDE arbitration
 - Throttle blips disabled for the stock EDC15C4 DDEs
@@ -92,7 +95,7 @@ With ignition on and the engine stopped, confirm that these values are present a
 - Throttle or calculated load tracks pedal input
 - Brake status changes correctly
 - Selector position and direction are correct
-- F-series GWS online status and indication are correct
+- Selected selector interface online/valid status and indication are correct
 - Input and output speeds are zero
 - Transmission temperature is plausible
 - Wheel speed is zero and all wheel-speed sources agree
@@ -184,8 +187,21 @@ Evaluate shift duration and firmness together with thermal response, clutch slip
 | Mechatronics identity | To be recorded |
 | Torque-converter identity | ZF number `1087 322 397`; production year 2013; stamped trace strings `1087322397 8639`, `250700004399`, `3 201311204001`, and `V172`; application and BMW service part number to be confirmed |
 | Transmission profile | Race+ / exact 8HP70 profile to be recorded |
-| Selector type/profile and BMW part number | BMW F-series 8HP GWS `61 31 9 296 898`; exact CANTCU profile to be confirmed |
+| Selected selector option | Option A: BMW F-series 8HP GWS / Option B: original E38 Steptronic selector |
+| Selector type/profile and BMW part number | Option A baseline: BMW F-series 8HP GWS `61 31 9 296 898`; Option B: E38 S227/S224 direct contacts with Universal DIN/CAN Shifter |
 | Selector input map or CAN assignment |  |
+| Option B S224 logic | Maintained manual gate; momentary strike-up/down accepted only in manual mode; physical direction and single-request debounce to be recorded |
+| Pedal demand/kickdown strategy | Preferred: validated DDE4.1 CAN pedal position/driver demand; record 0-100% scaling and full-pedal downshift calibration |
+| Optional external kickdown | C6/DIN4 using the reterminated former X70003 pin 17 conductor only if CANformance approves `Kickdown Active`; otherwise leave C6 unused |
+| Option B conditioner implementation | Separate four-channel conditioner / modified E82 5 V LED module |
+| Option B 5 V supply and channel values | Record regulator/protection, worst-case output, LED/resistor, pull-up, protection resistor, contact current, and C7 current |
+| Option B AIN open/closed voltages and thresholds |  |
+| Option B no-range, multiple-range, and short-to-ground behavior |  |
+| Brake CAN message/bit/polarity/timeout |  |
+| Option B shift-lock output | B1/DOUT1; record the CANformance-confirmed composite release-command source and output mode |
+| Y19 polarity/current and relay contacts | Record powered-to-lock/release result, steady-state/inrush current, and NO/NC contact selection |
+| Shift-lock OEM conditions | P/N position, brake status/plausibility, road-speed threshold, engine-running threshold, and approximately 0.5 s timing |
+| Shift-lock delay/startup/fault behavior | Record the OEM-defined delay transition; startup pulse disabled; release request inactive for missing, stale, or implausible required data |
 | CAN definition/version |  |
 | Wiring reference | Current CANformance Race+ installation; legacy `cantcu_8hp_wiring_v15.pdf` retained only as a compatibility/conductor-size reference |
 | Engine-control architecture | Dual BMW DDE 4.1 / Bosch EDC15C4, master/slave over CANP |

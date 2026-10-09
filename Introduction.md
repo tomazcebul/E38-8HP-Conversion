@@ -9,7 +9,7 @@ This document is the high-level conversion plan and index. Detailed procedures, 
 1. [Hardware Installation](HW-Installation.md) - gearbox, adapter and converter, OEM transmission support adapter, driveshaft, cooling, and mechanical validation
 2. [CANTCU Installation](CANTCU-Installation.md) - controller mounting, power, wiring, CAN integration, selector, interlocks, and electrical validation
 3. [CANTCU Programming and Calibration](CANTCU-Programming.md) - firmware, configuration, commissioning, logging, and calibration
-4. [M67B39 Turbocharger Assessment and Upgrade Options](../Turbo/Turbochargers.md) - identification, fault diagnosis, remanufacture, power upgrades, and commissioning
+4. [E38 Selector Integration](E38-Selector.md) - original Steptronic selector contacts, PRND conditioning, manual shifting, shift lock, and selector validation
 
 > [!WARNING]
 > This conversion affects the drivetrain, vehicle controls, and road safety. Fabrication, welding, driveshaft modification, electrical work, and calibration must be completed and inspected by suitably qualified people. Comply with local inspection, registration, and insurance requirements.
@@ -56,7 +56,8 @@ BMW assembly `24 00 7 642 542` identifies the donor as a GA8HP70Z-WTT for the F1
 - Retain BMW E38 gearbox support `22 32 1 096 427` and fabricate an engineered adapter between the 8HP70 mount interface and the OEM support.
 - Use the Adamat Performance M67-specific adapter and trigger-flywheel kit. Obtain a drawing and written specification tied to the M67B39, donor 8HP70, converter, and starter; verify the delivered geometry, trigger index, axial stack, runout, and balance before installation.
 - Use CANformance Race+ as the selected TCM software and installation baseline. Race+ is the recommended solution for new supported CANTCU installations and supports ZF 8HP70. Back up the stock TCM with the 8HP TCM Tool before programming Race+.
-- Reuse both X70001 pin 8 and pin 9 supplies for Race+: they are separate same-source 1.5 mm2 `U_UBR` branches from X6821, which is fed by the 4.0 mm2 `U_HR` conductor through 30 A F4. Combine the two conductors in a rated two-into-one automotive splice, install a dedicated 15 A fuse immediately downstream, then run new 2.5 mm2 conductors to CANTCU A1 and 8HP pin 13 and a 0.5 mm2 supply to F-series GWS pin 10. The additional BMW load relay and HELLA delayed-off timer are not required for Race+.
+- Provide two selector options. **Option A** uses BMW F-series 8HP GWS `61 31 9 296 898` and remains the supported baseline. **Option B** retains the original E38 Steptronic selector and uses the actual selector switch contacts and Steptronic switches as direct CANTCU inputs, as described in [E38 Selector Integration](E38-Selector.md). The Bowden cable, S8532 selector switch, and 12 V L1-L4 coded interface are intentionally excluded from the preferred design.
+- Reuse both X70001 pin 8 and pin 9 supplies for Race+: they are separate same-source 1.5 mm2 `U_UBR` branches from X6821, which is fed by the 4.0 mm2 `U_HR` conductor through 30 A F4. Combine the two conductors in a rated two-into-one automotive splice, install a dedicated 15 A fuse immediately downstream, then run new 2.5 mm2 conductors to CANTCU A1 and 8HP pin 13. For selector Option A, also run a 0.5 mm2 supply to F-series GWS pin 10. The additional BMW load relay and HELLA delayed-off timer are not required for Race+.
 - Start with a conservative Race+ configuration approved for the exact transmission and mechatronics. Do not copy pressure, clutch, converter, or shift-map settings from another 8HP variant.
 
 ## Engineering Gates
@@ -68,7 +69,7 @@ Resolve these points before committing parts or beginning fabrication:
 3. Obtain Adamat's written specification for the complete M67-to-8HP kit and confirm the exact M67B39, 8HP70, converter, starter, trigger, and axial-stack application.
 4. Measure tunnel, oil-pan, steering, exhaust, mount, cooler-line, and output-position clearances.
 5. Confirm Race+ support and licensing/programming requirements for the exact mechatronics, create and verify a stock TCM backup, and confirm the required vehicle signals.
-6. Validate BMW F-series 8HP GWS `61 31 9 296 898`, its connector and CANTCU profile; define fault behavior, Park/Neutral interlock, reverse lights, and cluster indication.
+6. Select and validate the selector implementation: Option A, BMW F-series 8HP GWS `61 31 9 296 898`; or Option B, the original E38 Steptronic selector with a validated interface. Confirm its CANTCU profile or input map, fault behavior, Park/Neutral interlock, reverse lights, and cluster indication.
 7. Confirm the legal inspection, registration, and insurance requirements for the conversion.
 
 ## High-Level Conversion Steps
@@ -87,7 +88,7 @@ Remove the 5HP30, trial-fit the F10 8HP70, verify the adapter and converter inte
 
 ### 4. Install CANTCU and Vehicle Interfaces
 
-Install CANTCU, the 8HP connector, and the F-series GWS using the approved Race+ power and harness-reuse schedule. Verify every reused conductor end-to-end, connect CAN3 to the master DDE through the former AGS pair, and preserve the independent master/slave CANP bus. Follow [CANTCU Installation](CANTCU-Installation.md).
+Install CANTCU, the 8HP connector, and either selector Option A (F-series GWS) or Option B (original E38 Steptronic selector with its validated interface) using the approved Race+ power and harness-reuse schedule. Verify every reused conductor end-to-end, connect CAN3 to the master DDE through the former AGS pair, and preserve the independent master/slave CANP bus. Follow [CANTCU Installation](CANTCU-Installation.md).
 
 ### 5. Configure CANTCU
 
@@ -111,6 +112,7 @@ Reinspect safety-critical fasteners, mounts, driveshaft, cooler circuit, wiring,
 - [ ] Adapter geometry, concentricity, converter spacing, and runout accepted
 - [ ] OEM gearbox support, custom support adapter, mounts, driveshaft, cooling, and fluid system accepted
 - [ ] Harness protection, Race+ switched power, WUP, grounds, CAN, selector, and interlocks accepted
+- [ ] Selected selector option, interface, configuration, and fault behavior recorded
 - [ ] Conservative configuration and calibration validated by logs
 - [ ] No leaks, abnormal noise, vibration, bus faults, ratio errors, or unexplained clutch slip
 - [ ] Post-test mechanical and electrical inspection completed
