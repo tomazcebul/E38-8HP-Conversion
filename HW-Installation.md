@@ -222,6 +222,14 @@ The July 2001 E38 740d has a dedicated transmission-oil cooler circuit rather th
 - A5S 560Z cooler outlet pipe `17 22 2 248 642`
 - Four FPM O-rings `17 21 1 742 636`, size `10.82 x 1.78 mm`
 
+### Factory Thermostat Findings
+
+BMW catalog and workshop information show that the original E38 740d cooler is a direct air-to-oil unit with no built-in or separately installed ATF thermostat. Its parts diagram lists cooler `17 21 2 248 569`, the two transmission-specific pipes, seals, and mounting hardware, but no regulator valve. The M67 workshop procedure likewise disconnects the ATF lines directly from the cooler without identifying a thermostat.
+
+BMW's complete Group 24 parts breakdown for the donor F10 LCI 535d GA8HP70Z shows no thermostat or thermostatic bypass in the transmission oil pan, mechatronics, oil reservoir, cooler-port interface, or other cataloged transmission subassembly. The donor installation uses external heat exchanger `11 42 8 510 856`; no separate ATF thermostat is cataloged for it. A thermostatic function integrated into that non-serviceable donor heat exchanger could not be excluded from the available documentation, but it is not retained when the E38 air-to-oil cooler replaces the donor heat exchanger.
+
+Therefore the conversion must not rely on either the E38 cooler or the 8HP70 transmission to provide ATF temperature regulation. Install and validate the external full-flow bypass thermostat specified below. This conclusion applies to the identified BMW GA8HP70Z-WTT donor assembly; do not generalize it to non-BMW 8HP70 installations, some of which use an external case-mounted cooler bypass.
+
 Retain the E38 air-to-oil cooler only if it passes inspection, pressure testing, and a professional contamination assessment. The original rigid pipes are transmission-specific and should not be forced onto the 8HP70. Replace or modify them with correctly supported ATF hose assemblies. If the 5HP30 failed internally or the cooler cannot be verified clean, replace the cooler and contaminated lines rather than risking debris entering the 8HP70.
 
 The selected circuit is:
@@ -400,6 +408,10 @@ Before and during commissioning:
 - [BMW F10 535d RWD output-drive repair kit 24 00 8 672 629](https://parts.bmwnorthwest.com/p/BMW__535d/Repair-kit--output-drive/90855022/24008672629.html)
 - [ZF 8HP45/70/75 output-shaft seal 0750 111 470](https://www.sussexautos.com/products/8hp45-8hp70-8hp75-output-shaft-seal-0750-111-470)
 - [BMWfans E38 740d oil cooler and cooling pipes](https://bmwfans.info/parts-catalog/E38/Europe/740d-M67/L-A/jul2001/browse/radiator/oil_cooler_oil_cooling_pipe/)
+- [RealOEM E38 740d oil cooler and cooling pipes](https://www.realoem.com/bmw/enUS/showparts?id=GE81-EUR-02-1999-E38-BMW-740d&diagId=17_0174)
+- [BMW TIS E38 740d transmission-fluid-cooler removal](https://workshop-manuals.com/bmw/7_series_e38/740d_m67_sal/2_repair_instructions/17__cooling_system_(m67)/21__oil_cooler/1_ra__removing_and_installing_replacing_transmission_fluid_cooler_(m67)/)
+- [RealOEM F10 LCI 535d GA8HP70Z transmission parts](https://www.realoem.com/bmw/enUS/partgrp?id=5D51-EUR---F10N-BMW-535d&mg=24)
+- [RealOEM F10 LCI 535d oil filter and heat exchangers](https://www.realoem.com/bmw/enUS/showparts?id=5D51-EUR---F10N-BMW-535d&diagId=11_4568)
 - [DomiWorks Type 1 N47/N57/B58 8HP oil-cooler adapter](https://www.domi-works.com/products/8hp-oil-cooler-adapter-n57)
 - [BMWfans BMW 17 22 7 592 723 thermostat, oil cooler line](https://bmwfans.info/parts-catalog/17227592723)
 - [BMWfans F80 LCI M3 transmission-oil cooling lines and seals](https://bmwfans.info/parts-catalog/F80N/Europe/M3-S55/L-N/browse/radiator/transmission_oil_cooling/)
