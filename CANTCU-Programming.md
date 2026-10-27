@@ -27,6 +27,88 @@ This document specifies Race+ backup, programming, configuration, commissioning,
 - CAN diagnostic interface and logging capability
 - Controlled test area and independent data monitoring where required
 
+## DDE 4.1 CAN Interface and Torque Intervention
+
+This section summarizes the transmission interface of the M67 DDE 4.1 (Bosch EDC15C), based on the Bosch software function description *EDC15C B079.CC0* (Y 445 S00 003-CC0, January 2001). The Markdown translation is in the sibling `Bosch-EDC15C/EDC15C-Function-Description` folder: chapter 3.1.8 covers the external quantity intervention, chapter 3.1.12 the active surge damper, and chapter 9 the CAN messages. The messages follow BMW CAN-STAND Rev. 1.5. Treat bit positions and coding values as reference data. Confirm them against the installed DDE software and CANformance documentation, and verify them with a CAN log before relying on them.
+
+### CAN Messages
+
+The DDE evaluates only the following EGS1 signals. It ignores the other EGS1 fields: output speed, oil temperature switches, EGS/SMG type, and transmission torque absorption.
+
+<!-- markdownlint-disable MD060 -->
+
+| Direction | Message | ID | Signals used by DDE / provided to TCU |
+| --- | --- | --- | --- |
+| TCU → DDE | EGS1 | `0x43F` | `GANG_INF` (bits 0–2, target/current gear), `S_SCHALT` (bit 3, shift active), `S_WK` (bits 6–7, converter lock-up state), `GANG_WHL_ANZ` (bits 8–11, selector position; P/N replaces the clutch switch input `dimKUP`), `MD_IND_GS` (bits 24–31, requested torque relative to `MD_NORM`; `0xFF` = no intervention) |
+| DDE → TCU | DDE1 | `0x316` | Terminal 15, engine speed `N_MOT`, driver demand torque `MD_IND`, torque after interventions `MD_IND_NE`, friction torque `MD_REIB`, intervention status `STAT_MD_E`, `F_GE` (1 = transmission intervention not reliably executed: EGS1 timeout or manual gearbox), `F_N_MOT` |
+| DDE → TCU | DDE2 | `0x329` | Engine temperature, ambient pressure, accelerator pedal angle `W_FPDK`, kickdown `S_KD`, brake `S_BS`/`F_BS`, cruise status, shiftlock request, and multiplexed `MD_NORM` (torque scale: transmitted value 255 = `MD_NORM`, sent as Nm/16) |
+| DDE → cluster | DDE4 | `0x545` | Lamps and fuel consumption; no transmission-control content |
+| DSC → DDE | ASC1 | `0x153` | ASR torque reduction and MSR torque increase (see below); sent by the vehicle DSC, not by CANTCU |
+
+<!-- markdownlint-enable MD060 -->
+
+The DDE coding word `cawINF_CAB` enables the CAN interventions. Bit 6 = CAN fitted (enables the intervention), bit 0 = EGS fitted (enables EGS1 failure diagnosis), bit 1 = ASC fitted. With an automatic transmission and ASC, use `0x43` or `0x67`. The E38 740d already runs an automatic transmission, so the existing coding is expected to suit CANTCU. Confirm it by reading both DDEs.
+
+CANTCU CAN3 connects only to the master DDE. Confirm with CANformance how the master DDE passes the EGS torque request to the slave DDE, and verify both cylinder banks respond equally.
+
+### Engine Response to Torque-Reduction Requests
+
+1. The DDE converts `MD_IND_GS` (`mroMD_EGS`) into a fuel quantity (`mroM_EXGS`) using the specific-consumption map `mrwKFVB_KF` (engine speed and torque).
+2. It takes the minimum of the driver demand (pedal/cruise), EGS, ASR and transfer-case requests. It then compares this minimum with the MSR request from DSC and uses the higher value. **An EGS request can only reduce fuel.** A request above the driver demand has no effect.
+3. The resulting quantity passes through the active surge damper (ARD):
+   - During an external intervention, the ARD switches to dedicated CAN parameter sets (`mrwFFCan…`, `mrwDSCAN…`, `mrwPSCAN…`). These have separate settings for falling and rising quantity, so the torque cut-in and the torque restore are filtered by the DDE calibration and are not instantaneous.
+   - When `S_SCHALT` = `mrwARDS_I` or `S_WK` = `mrwARDWK_I`, the ARD disturbance controller is initialized. When `S_SCHALT` = `mrwARDS_L` or `S_WK` = `mrwARDWK_L`, the ARD can switch to idle mode.
+   - `GANG_INF` selects the gear-dependent ARD parameter sets.
+   - These functions apply only when there is no CAN fault and EGS1 is present.
+4. DDE1 reports back `MD_IND`, `MD_IND_NE` and `STAT_MD_E`. The torque reduction actually achieved is `MD_IND` − `MD_IND_NE`. If `F_GE` = 1, the DDE has rejected the intervention.
+
+If EGS1 is lost, the DDE stores `fbeEEGS_F`, sets `F_GE`, and stops accepting EGS interventions. It also replaces the driver demand with a substitute quantity (`mroM_EEGS`):
+
+- below `mrwV_ANFAH`: the drive-off curve `mrwANFAHKL`
+- above `mrwV_ANFAH`: a ramp at `mrwEGSRAMP` up to `mrwM_EGSMX`
+
+The car remains driveable, but with limited power, until EGS1 is present again.
+
+CANTCU requirements:
+
+- Send EGS1 continuously, at the OEM rate, from ignition on.
+- Hold `MD_IND_GS` at `0xFF` except during an active reduction.
+- Scale reduction requests against the received `MD_NORM`.
+- Drive `S_SCHALT`, `GANG_INF`, `S_WK` and `GANG_WHL_ANZ` from confirmed transmission state.
+
+### Upshifts and Downshifts Without Engine Blips
+
+The stock EDC15C software has no EGS torque-increase path. Upshifts work as designed: the torque reduction covers the clutch handover. Downshifts depend on load:
+
+<!-- markdownlint-disable MD060 -->
+
+| Downshift type | Behaviour without a blip | Severity |
+| --- | --- | --- |
+| Power-on / kickdown | The engine's own torque raises the input speed once the off-going clutch releases. A torque reduction near synchronous speed prevents flare. | Normal |
+| Coast / braking (pedal released, overrun fuel cut) | The on-coming clutch must drag the engine to the higher speed using vehicle inertia. Expect a deceleration jolt or clunk, longer shift time, and more clutch heat and wear. The large M67 rotating inertia makes this worse. | Main concern |
+| Multi-gear coast skips (e.g. 7→4) and high-rpm manual downshifts | Largest rpm jump, so the strongest jolt and the most clutch work. Most noticeable in Sport and manual modes. | Highest |
+| Low-speed coast (3→2→1) | Small rpm jump near idle, partly helped by the idle speed controller. | Usually acceptable |
+
+<!-- markdownlint-enable MD060 -->
+
+Compensate in the CANTCU/Race+ calibration rather than in the engine:
+
+1. Use a softer on-coming clutch pressure ramp and a longer overlap on coast downshifts, so the clutch accelerates the engine progressively.
+2. Open, or allow controlled slip of, the converter lock-up clutch during coast downshifts so the converter fluid absorbs the speed step.
+3. Move coast-downshift points to lower speeds, so each shift starts from a lower rpm and the rpm step is smaller.
+4. Shift sequentially on coast; avoid skip-downshifts.
+5. Limit manual and paddle downshifts by a maximum resulting engine speed, and reject or delay requests above it.
+6. On power-on downshifts, let engine torque raise the input speed and use `MD_IND_GS` only to prevent flare near synchronous speed.
+
+The DDE does accept a torque increase through the DSC MSR request in ASC1 `0x153`. The request is valid when `B_MSR` = 1, `B_ASC` = 0 and `MD_IND_MSR` ≠ 0, and it has priority over the EGS intervention. Do not use this path as a blip substitute:
+
+- The vehicle DSC already transmits `0x153`. Injecting it would need a gateway that rewrites DSC traffic, which CANTCU firmware is not known to support.
+- The DDE checks the request's plausibility and ramps it out if invalid (`mrwS_MDASC`/`ASC_ALIVE`, `mrwMSRRAMP`), and the ARD filters it.
+- Master/slave propagation is unverified.
+- An injected or stuck MSR frame produces unintended engine torque.
+
+The only supported blip route remains validated custom software on both DDE units (see below).
+
 ## 1. Back Up and Install Race+
 
 1. Record the installed firmware and configuration-software versions.
@@ -74,7 +156,7 @@ Review these calibration groups:
 
 - Drive and Sport shift schedules
 - Upshift and downshift hysteresis
-- Downshift strategy without native engine blips
+- Downshift strategy without native engine blips (see [Upshifts and Downshifts Without Engine Blips](#upshifts-and-downshifts-without-engine-blips))
 - Kickdown behavior
 - Clutch fill and shift-pressure settings
 - Shift timing and overlap
@@ -160,6 +242,9 @@ Evaluate shift duration and firmness together with thermal response, clutch slip
 - [ ] Selector loss-of-communication or electrical-fault behavior verified
 - [ ] Conservative torque, shift, and lock-up calibration installed
 - [ ] Stock-EDC15C4 blip requests disabled, or validated custom software recorded for both DDEs
+- [ ] EGS1 `0x43F` transmitted continuously; no `fbeEEGS_F` and `F_GE` = 0 in both DDEs
+- [ ] Torque reduction verified from DDE1 `MD_IND` − `MD_IND_NE` on both cylinder banks
+- [ ] Coast-downshift and manual-downshift quality accepted without blips
 - [ ] Static commissioning completed without faults
 - [ ] Light-load shift behavior validated by logs
 - [ ] Converter slip and lock-up behavior validated
@@ -211,6 +296,8 @@ Evaluate shift duration and firmness together with thermal response, clutch slip
 | `DDE41KLO` BMW/Bosch label numbers |  |
 | `DDE41KLO` hardware/software index and role |  |
 | Dual-DDE torque-reduction strategy |  |
+| DDE `cawINF_CAB` coding (both DDEs) | Expected `0x43` or `0x67`; record read-out values |
+| EGS1 `0x43F` rate and `MD_IND_GS` scaling | Record transmit period and `MD_NORM` value received in DDE2 |
 | Dual-DDE engine-cut strategy |  |
 | Throttle-blip strategy | Disabled for stock EDC15C4 software |
 | Custom blip-software supplier/version | Not applicable unless installed on both DDEs |
@@ -233,4 +320,5 @@ Evaluate shift duration and firmness together with thermal response, clutch slip
 - CANformance-approved base calibration for the exact F10 8HP70 mechatronics
 - BMW and ZF service information for the identified F10 8HP70 assembly
 - BMW E38 and M67 diagnostic information
+- Bosch *Software Function Description EDC15C B079.CC0* (Y 445 S00 003-CC0, BMW, January 2001): chapter 3.1.8 External quantity intervention, chapter 3.1.12 Active surge damper, chapter 9 CAN functions; English Markdown translation in `Bosch-EDC15C/EDC15C-Function-Description/en`
 - [BMW Service Training: Diesel Engines M57/M67 Common Rail](https://pdfcoffee.com/m57enpdf-pdf-free.html)
