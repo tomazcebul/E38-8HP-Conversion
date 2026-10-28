@@ -49,7 +49,7 @@ The DDE evaluates only the following EGS1 signals. It ignores the other EGS1 fie
 
 The DDE coding word `cawINF_CAB` enables the CAN interventions. Bit 6 = CAN fitted (enables the intervention), bit 0 = EGS fitted (enables EGS1 failure diagnosis), bit 1 = ASC fitted. With an automatic transmission and ASC, use `0x43` or `0x67`. The E38 740d already runs an automatic transmission, so the existing coding is expected to suit CANTCU. Confirm it by reading both DDEs.
 
-CANTCU CAN3 connects only to the master DDE. Confirm with CANformance how the master DDE passes the EGS torque request to the slave DDE, and verify both cylinder banks respond equally.
+CANTCU CAN3 connects only to the master DDE, as the original AGS did. In the OEM wiring the master is the only DDE on the AGS and vehicle CAN. The slave DDE's only CAN connection is the private CANP link to the master (see [Engine-Control CAN Topology](CANTCU-Installation.md#engine-control-can-topology)). The master therefore receives EGS1, processes the torque request, and passes the result to the slave over CANP, as it did with the original AGS. The CANP message content is not documented. During commissioning, confirm from logs that a torque reduction affects both cylinder banks equally.
 
 ### Engine Response to Torque-Reduction Requests
 
@@ -104,7 +104,7 @@ The DDE does accept a torque increase through the DSC MSR request in ASC1 `0x153
 
 - The vehicle DSC already transmits `0x153`. Injecting it would need a gateway that rewrites DSC traffic, which CANTCU firmware is not known to support.
 - The DDE checks the request's plausibility and ramps it out if invalid (`mrwS_MDASC`/`ASC_ALIVE`, `mrwMSRRAMP`), and the ARD filters it.
-- Master/slave propagation is unverified.
+- An MSR request would pass from the master to the slave over the undocumented CANP link, so the response of the second bank is unverified.
 - An injected or stuck MSR frame produces unintended engine torque.
 
 The only supported blip route remains validated custom software on both DDE units (see below).

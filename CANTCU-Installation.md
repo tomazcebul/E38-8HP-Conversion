@@ -227,7 +227,36 @@ For the supported BMW E38 integration, use the current CANformance vehicle/ECU i
 
 Connect CANTCU CAN3 to the former AGS-to-master-DDE pair after removing A7000: CAN3 Low at X70004 pin 37 runs to X2412 pin 3, and CAN3 High at X70004 pin 36 runs to X2412 pin 4 on A2410, the DDE I/master control unit. Confirm both connector identities, cavity numbering, polarity, and end-to-end continuity before terminating the pair; do not identify either conductor by wire colour alone. Do not parallel CANTCU with the removed 5HP30 controller. This is the external transmission-control CAN connection to the master DDE, not the dedicated CANP link between the master and slave DDE units. Preserve the CANP wiring unchanged.
 
-The original A7000 AGS transmission control unit has three blue plug connectors:
+### Engine-Control CAN Topology
+
+The E38 740d wiring diagram shows three CAN connections at the master DDE A2410. The slave DDE A2420 has no Module 4 connector and no vehicle- or AGS-CAN pins. Its only CAN connection is CANP to the master. DSC, IKE, the steering-angle sensor, and the transmission controller therefore reach the engine control only through the master DDE. Full connector pinouts are in [Appendix A](#appendix-a-dde-41-and-ags-control-unit-pinouts).
+
+<!-- markdownlint-disable MD060 -->
+
+| Bus | Conductors | Nodes and pins | Notes |
+| --- | --- | --- | --- |
+| CANP (master/slave) | D_CAN-PL `0.35 mm2` GE; D_CAN-PH `0.35 mm2` SW; shielded cable W2413.2 | Master A2410 X2413 pin 44 (L) / pin 45 (H) to slave A2420 X2423 pin 47 (L) / pin 46 (H); shield at slave X2423 pin 48 | Private two-node link; leave unchanged |
+| AGS CAN (CANTCU CAN3) | CAN-H `0.5 mm2` GE/SW; CAN-L `0.5 mm2` GE/BR | Master A2410 X2412 pin 4 (H) / pin 3 (L) to former AGS A7000 X70004 pin 36 (H) / pin 37 (L) | Point-to-point run; reused for CANTCU CAN3 |
+| Vehicle CAN | CAN-H GE/SW (`0.35 mm2` at the DDE, `0.5 mm2` elsewhere); CAN-L `0.5 mm2` GE/BR | Master A2410 X2414 pin 36 (H) / pin 37 (L), splices X18827/X18832 (H) and X18826/X18831 (L), to DSC A65 X1746 pin 24 (H) / pin 40 (L), IKE A63 X10114 pin 8 (H) / pin 9 (L), and steering-angle sensor R33 X1658 pin 3 (H) / pin 4 (L) | DDE, DSC, IKE, and steering-angle sensor network |
+
+<!-- markdownlint-enable MD060 -->
+
+Additional master/slave hardwired links: a speed signal from slave X2423 pin 42 to master X2413 pin 7, and a connection between slave X2421 pin 7 and master X2411 pin 7. The diagnostic TXD line runs to master X2411 pin 3, slave X2422 pin 6, and the former AGS.
+
+The Bosch EDC15C function description (chapter 9.1) describes one integrated CAN controller in the master. That controller handles EGS1, ASC1/ASC3, INSTR2/INSTR3, and the DDE transmit messages. The AGS pair (X2412 pins 3/4) and the vehicle-CAN pair (X2414 pins 37/36) are therefore probably connected inside the master DDE, so the bus passes through the DDE housing. This is unconfirmed. Until it is measured, do not assume either of these:
+
+- that CANTCU CAN3 can see DSC and IKE traffic directly;
+- that EGS1 reaches the IKE for the gear display without being forwarded.
+
+The Bosch description does not cover the CANP link. Its message content and how torque interventions reach the slave are undocumented.
+
+Before connecting CAN3, with the ignition off and the battery disconnected:
+
+1. Measure continuity from X2412 pin 4 to X2414 pin 36 (CAN-H) and from X2412 pin 3 to X2414 pin 37 (CAN-L). Measure first with the master DDE connected (back-probing), then with it disconnected. Continuity only while the DDE is connected indicates an internal pass-through.
+2. With A7000 removed, measure resistance between CAN-H and CAN-L at X70004 pins 36/37 to determine the existing termination. Then decide whether CANTCU CAN3, which has no built-in termination, needs an external `120 ohm` terminator.
+3. With the ignition on, log the bus at X70004 pins 36/37. The presence of ASC1 `0x153`, ASC3 `0x1F3`, INSTR2 `0x613`, and INSTR3 `0x615` confirms that the pair is part of the vehicle CAN.
+
+The original A7000 AGS transmission control unit has three blue plug connectors. The complete original pinout is in [Appendix A.3](#a3-a7000-ags-transmission-control-unit-removed); the tables below list the conductors relevant to the conversion and their disposition:
 
 <!-- markdownlint-disable MD060 -->
 
@@ -387,6 +416,7 @@ Proceed to static commissioning only after loading and checking a conservative c
 - [ ] WUP and switched combined power behavior verified
 - [ ] Grounds and loaded voltage drops accepted
 - [ ] Harness secured, sealed, and protected from heat and abrasion
+- [ ] X2412/X2414 pass-through, X70004 CAN termination, and bus traffic at X70004 verified per [Engine-Control CAN Topology](#engine-control-can-topology)
 - [ ] CAN resistance and signal integrity accepted
 - [ ] CAN communication stable with no new bus faults
 - [ ] Selector option, hardware/interface, CANTCU profile or input map, and firmware support recorded
@@ -459,9 +489,446 @@ Proceed to static commissioning only after loading and checking a conservative c
 - [CANformance BMW F-Series 8HP shifter](https://wiki.canformance.net/CANTCU/integrations/supportedshifters/Fxx-8HP)
 - [CANformance input configuration](https://wiki.canformance.net/CANTCU/software/config/inputcfg)
 - [E38 Selector Integration](E38-Selector.md) - Option B design, wiring, fail-safe requirements, and acceptance tests
-- [NewTIS A2410 DDE control unit I/master](https://www.newtis.info/tisv2/a/en/e38-740d-lim/ZL7ctjS) - identifies master-DDE connector X2412 and the former AGS CAN connection
+- [NewTIS A2410 DDE control unit I/master](https://www.newtis.info/tisv2/a/en/e38-740d-lim/ZL7ctjS) - identifies master-DDE connector X2412 and the former AGS CAN connection; source of the master pinout in Appendix A
+- NewTIS A2420 DDE control unit II/slave - source of the slave pinout in Appendix A
+- BMW E38 740d CAN wiring diagram (A2410, A2420, A7000, A65, A63, R33) - source of the engine-control CAN topology
+- Bosch *Software Function Description EDC15C B079.CC0* (Y 445 S00 003-CC0), chapter 9 CAN functions - single integrated CAN controller and message set; English Markdown translation in `Bosch-EDC15C/EDC15C-Function-Description/en`
 - [NewTIS A7000 AGS transmission control unit](https://www.newtis.info/tisv2/a/en/e38-740d-lim/YqwE3pY) - identifies original AGS connectors X70001, X70003, and X70004
 - [BMW Service Training: Diesel Engines M57/M67 Common Rail](https://pdfcoffee.com/m57enpdf-pdf-free.html) - identifies dual DDE 4.1 master/slave control units and the CANP link for the M67
 - BMW E38 wiring diagrams
 - BMW and ZF connector information for the identified F10 8HP70 assembly
 - Local vehicle modification and inspection regulations
+
+## Appendix A: DDE 4.1 and AGS Control-Unit Pinouts
+
+Pin assignments of the two M67 DDE 4.1 control units and the original A7000 AGS transmission control unit as listed in NewTIS for the E38 740d. Type: `E` = input, `A` = output, `E/A` = input/output, `M` = ground. The slave has no Module 4 connector. Confirm cavity numbering on the physical connector before probing; do not rely on wire colour alone.
+
+### A.1 A2410 DDE Control Unit I/Master
+
+<!-- markdownlint-disable MD060 -->
+
+| Number | Pins, colour | Description |
+| --- | --- | --- |
+| X2411 | 9-pin, black | Plug connector DDE control unit I/master Module 1 |
+| X2412 | 24-pin, black | Plug connector DDE control unit I/master Module 2 |
+| X2413 | 52-pin, black | Plug connector DDE control unit I/master Module 3 |
+| X2414 | 40-pin, black | Plug connector DDE control unit I/master Module 4 |
+| X2415 | 9-pin, black | Plug connector DDE control unit I/master Module 5 |
+
+#### Plug Connector X2411
+
+| Pin | Type | Description / Signal type | Connection / Measuring notes |
+| --- | --- | --- | --- |
+| 1 | E | Voltage supply terminal 15/30 | Fuse carrier, engine electronics |
+| 2 |  | Not used |  |
+| 3 | E/A | Diagnostic link TXD | AGS transmission control unit |
+| 4 | M | Ground | Ground connector |
+| 5 | M | Ground | Ground connector |
+| 6 | M | Ground | Ground connector |
+| 7 | A | Connection DDE control unit II/slave | DDE control unit II/slave |
+| 8 | E | Voltage supply terminal 15/30 | Fuse carrier, engine electronics |
+| 9 | A | Activation DDE main relays I and II | DDE relay I, DDE relay II |
+
+#### Plug Connector X2412
+
+| Pin | Type | Description / Signal type | Connection / Measuring notes |
+| --- | --- | --- | --- |
+| 1 |  | Not used |  |
+| 2 |  | Not used |  |
+| 3 | E/A | CAN interface CAN-LOW (CAN-L) | AGS transmission control unit |
+| 4 | E/A | CAN interface CAN-HIGH (CAN-H) | AGS transmission control unit |
+| 5 |  | Not used |  |
+| 6 |  | Not used |  |
+| 7 |  | Not used |  |
+| 8 | A | Signal Electrical changeover valve, engine mount | Electrical changeover valve, engine mount |
+| 9 | A | Supply Presupply pressure sensor | Presupply pressure sensor |
+| 10 | M | Ground Presupply pressure sensor | Presupply pressure sensor |
+| 11 |  | Not used |  |
+| 12 | A | Signal Preheater plug relay I | Glow plug relay |
+| 13 | A | Activation Preheater plug relay I | Glow plug relay |
+| 14 |  | Not used |  |
+| 15 |  | Not used |  |
+| 16 |  | Not used |  |
+| 17 | E | Signal Presupply pressure sensor | Presupply pressure sensor |
+| 18 |  | Not used |  |
+| 19 |  | Not used |  |
+| 20 |  | Not used |  |
+| 21 | A | Supply Boost pressure adjuster 2 | Boost pressure adjuster 2 |
+| 22 |  | Not used |  |
+| 23 |  | Not used |  |
+| 24 |  | Not used |  |
+
+#### Plug Connector X2413
+
+| Pin | Type | Description / Signal type | Connection / Measuring notes |
+| --- | --- | --- | --- |
+| 1 | A | Supply Hot-film air mass meter | Hot-film air mass meter |
+| 2 | E | Signal Hot-film air mass meter | Hot-film air mass meter |
+| 3 | M | Ground Hot-film air mass meter | Hot-film air mass meter |
+| 4 |  | Not used |  |
+| 5 |  | Not used |  |
+| 6 | M | Ground | Ground connector |
+| 7 | E | Speed signal | DDE control unit II/slave |
+| 8 |  | Not used |  |
+| 9 |  | Not used |  |
+| 10 | A | Supply Boost pressure adjuster 1 | Boost pressure adjuster 1 |
+| 11 | E | Signal Intake air temperature | Hot-film air mass meter |
+| 12 | A | Activation Preheater plug relay II | Preheater relay |
+| 13 |  | Not used |  |
+| 14 |  | Not used |  |
+| 15 |  | Not used |  |
+| 16 |  | Not used |  |
+| 17 |  | Not used |  |
+| 18 |  | Not used |  |
+| 19 |  | Not used |  |
+| 20 |  | Not used |  |
+| 21 |  | Not used |  |
+| 22 |  | Not used |  |
+| 23 |  | Not used |  |
+| 24 |  | Not used |  |
+| 25 |  | Not used |  |
+| 26 |  | Not used |  |
+| 27 |  | Not used |  |
+| 28 | E | Signal Dual temperature sensor | Dual temperature sensor |
+| 29 |  | Not used |  |
+| 30 |  | Not used |  |
+| 31 | E | Voltage supply terminal 15/30 | Fuse carrier, engine electronics |
+| 32 | M | Ground Dual temperature sensor | Dual temperature sensor |
+| 33 |  | Not used |  |
+| 34 |  | Not used |  |
+| 35 |  | Not used |  |
+| 36 |  | Not used |  |
+| 37 |  | Not used |  |
+| 38 | A | Signal Electrical cutout | Electrical cutout |
+| 39 |  | Not used |  |
+| 40 | E | Signal Oil level sensor | Oil level sensor |
+| 41 | E | Signal Oil pressure switch | Oil pressure switch |
+| 42 |  | Not used |  |
+| 43 |  | Not used |  |
+| 44 | E/A | CAN interface CAN-LOW (CAN-L) | DDE control unit II/slave |
+| 45 | E/A | CAN interface CAN-HIGH (CAN-H) | DDE control unit II/slave |
+| 46 |  | Not used |  |
+| 47 |  | Not used |  |
+| 48 |  | Not used |  |
+| 49 |  | Not used |  |
+| 50 | E | Battery charge indicator lamp signal (terminal 61) | Alternator |
+| 51 | E | Start signal | Starter |
+| 52 | A | Signal Preheater plug relay II | Preheater relay |
+
+#### Plug Connector X2414
+
+| Pin | Type | Description / Signal type | Connection / Measuring notes |
+| --- | --- | --- | --- |
+| 1 | A | Battery charge indicator lamp signal (terminal 61) | Instrument cluster |
+| 2 | A | Start signal | Integrated electronic control unit (IKE) |
+| 3 |  | Not used |  |
+| 4 | A | Signal Electric fan | Electric fan |
+| 5 |  | Not used |  |
+| 6 |  | Not used |  |
+| 7 | M | Ground Pedal position sensor | Pedal position sensor |
+| 8 | E | Signal Pedal position sensor | Pedal position sensor |
+| 9 | A | Supply Pedal position sensor | Pedal position sensor |
+| 10 | A | Signal Fuel pump relay 1 | Fuel pump relay 1 |
+| 11 | A | Signal Oil pressure switch | Instrument cluster |
+| 12 | M | Ground Pedal position sensor | Pedal position sensor |
+| 13 | E | Signal Pedal position sensor | Pedal position sensor |
+| 14 | A | Supply Pedal position sensor | Pedal position sensor |
+| 15 |  | Not used |  |
+| 16 |  | Not used |  |
+| 17 | A | Engine speed signal output (TD) | Diagnostic connector |
+| 18 |  | Not used |  |
+| 19 |  | Not used |  |
+| 20 |  | Not used |  |
+| 21 | A | Signal Oil level sensor | Light module |
+| 22 | E | Signal Rear right wheel speed sensor | ABS/ASC control unit, ABS/DSC control unit |
+| 23 |  | Not used |  |
+| 24 | E | Brake light switch signal | Brake light switch |
+| 25 |  | Not used |  |
+| 26 | E | Voltage supply, terminal 15 | Fuse F24 |
+| 27 | E | Data link MFL | Coil spring |
+| 28 | E | Brake light test signal | Brake light switch |
+| 29 | E | A/C compressor signal | Heating and A/C control module |
+| 30 |  | Not used |  |
+| 31 |  | Not used |  |
+| 32 | E/A | Diagnosis signal TXD | Diagnostic connector |
+| 33 | E | Signal, electronic immobilizer EWS (S-DWA) | Electronic immobilizer control unit (EWS) |
+| 34 |  | Not used |  |
+| 35 |  | Not used |  |
+| 36 | E/A | CAN interface CAN-HIGH (CAN-H) | CAN link |
+| 37 | E/A | CAN interface CAN-LOW (CAN-L) | CAN link |
+| 38 |  | Not used |  |
+| 39 |  | Not used |  |
+| 40 |  | Not used |  |
+
+#### Plug Connector X2415
+
+| Pin | Type | Description / Signal type | Connection / Measuring notes |
+| --- | --- | --- | --- |
+| 1 | A | Supply Injectors 2 and 8 | Injectors 2 and 8 |
+| 2 |  | Not used |  |
+| 3 | A | Signal Injector 2 | Injector 2 |
+| 4 | A | Supply Injectors 3 and 5 | Injectors 3 and 5 |
+| 5 | A | Signal Injector 5 | Injector 5 |
+| 6 |  | Not used |  |
+| 7 | A | Signal Injector 3 | Injector 3 |
+| 8 |  | Not used |  |
+| 9 | A | Signal Injector 8 | Injector 8 |
+
+<!-- markdownlint-enable MD060 -->
+
+### A.2 A2420 DDE Control Unit II/Slave
+
+<!-- markdownlint-disable MD060 -->
+
+| Number | Pins, colour | Description |
+| --- | --- | --- |
+| X2421 | 9-pin, grey | Plug connector DDE control unit II/slave Module 1 |
+| X2422 | 24-pin, grey | Plug connector DDE control unit II/slave Module 2 |
+| X2423 | 52-pin, grey | Plug connector DDE control unit II/slave Module 3 |
+| X2425 | 9-pin, grey | Plug connector DDE control unit II/slave Module 5 |
+
+#### Plug Connector X2421
+
+| Pin | Type | Description / Signal type | Connection / Measuring notes |
+| --- | --- | --- | --- |
+| 1 | E | Voltage supply terminal 15/30 | Fuse carrier, engine electronics |
+| 2 |  | Not used |  |
+| 3 |  | Not used |  |
+| 4 | M | Ground | Ground connector |
+| 5 | M | Ground | Ground connector |
+| 6 | M | Ground | Ground connector |
+| 7 | E | Connection DDE control unit I/master | DDE control unit I/master |
+| 8 | E | Voltage supply terminal 15/30 | Fuse carrier, engine electronics |
+| 9 |  | Not used |  |
+
+#### Plug Connector X2422
+
+| Pin | Type | Description / Signal type | Connection / Measuring notes |
+| --- | --- | --- | --- |
+| 1 |  | Not used |  |
+| 2 |  | Not used |  |
+| 3 |  | Not used |  |
+| 4 |  | Not used |  |
+| 5 |  | Not used |  |
+| 6 | E/A | Diagnostic link TXD | AGS transmission control unit |
+| 7 |  | Not used |  |
+| 8 |  | Not used |  |
+| 9 |  | Not used |  |
+| 10 |  | Not used |  |
+| 11 |  | Not used |  |
+| 12 |  | Not used |  |
+| 13 | A | Signal Changeover valve for exhaust gas recirculation (EGR) 2 | Changeover valve for exhaust gas recirculation (EGR) 2 |
+| 14 |  | Not used |  |
+| 15 |  | Not used |  |
+| 16 |  | Not used |  |
+| 17 |  | Not used |  |
+| 18 |  | Not used |  |
+| 19 |  | Not used |  |
+| 20 | A | Signal Changeover valve for exhaust gas recirculation (AGR) | Changeover valve for exhaust gas recirculation (AGR) |
+| 21 |  | Not used |  |
+| 22 |  | Not used |  |
+| 23 |  | Not used |  |
+| 24 |  | Not used |  |
+
+#### Plug Connector X2423
+
+| Pin | Type | Description / Signal type | Connection / Measuring notes |
+| --- | --- | --- | --- |
+| 1 | A | Supply Hot-film air mass meter I | Hot-film air mass meter I |
+| 2 | E | Signal Hot-film air mass meter I | Hot-film air mass meter I |
+| 3 | M | Ground Hot-film air mass meter I | Hot-film air mass meter I |
+| 4 | E | Signal, camshaft sensor | Hall-effect sensor, camshaft 1 |
+| 5 |  | Not used |  |
+| 6 | E | Signal Speed (rpm) sensor | Speed (rpm) sensor |
+| 7 |  | Not used |  |
+| 8 |  | Not used |  |
+| 9 |  | Not used |  |
+| 10 |  | Not used |  |
+| 11 | E | Signal Intake air temperature | Hot-film air mass meter I |
+| 12 |  | Not used |  |
+| 13 |  | Not used |  |
+| 14 | A | Supply for boost pressure sensor | Boost pressure sensor |
+| 15 | E | Signal Boost pressure sensor | Boost pressure sensor |
+| 16 | M | Ground Boost pressure sensor | Boost pressure sensor |
+| 17 | M | Camshaft sensor ground | Hall-effect sensor, camshaft 1 |
+| 18 |  | Not used |  |
+| 19 | M | Shield Speed (rpm) sensor | Speed (rpm) sensor |
+| 20 | M | Ground Rail pressure sensor | Rail pressure sensor |
+| 21 |  | Not used |  |
+| 22 |  | Not used |  |
+| 23 |  | Not used |  |
+| 24 |  | Not used |  |
+| 25 |  | Not used |  |
+| 26 |  | Not used |  |
+| 27 |  | Not used |  |
+| 28 |  | Not used |  |
+| 29 |  | Not used |  |
+| 30 |  | Not used |  |
+| 31 | M | Ground Speed (rpm) sensor | Speed (rpm) sensor |
+| 32 | M | Ground Dual temperature sensor | Dual temperature sensor |
+| 33 | E | Signal Rail pressure sensor | Rail pressure sensor |
+| 34 |  | Not used |  |
+| 35 | A | Supply Rail pressure sensor | Rail pressure sensor |
+| 36 |  | Not used |  |
+| 37 |  | Not used |  |
+| 38 | A | Supply Rail pressure control valve | Rail pressure control valve |
+| 39 |  | Not used |  |
+| 40 |  | Not used |  |
+| 41 |  | Not used |  |
+| 42 | A | Speed signal | DDE control unit I/master |
+| 43 |  | Not used |  |
+| 44 |  | Not used |  |
+| 45 |  | Not used |  |
+| 46 | E/A | CAN interface CAN-HIGH (CAN-H) | DDE control unit I/master |
+| 47 | E/A | CAN interface CAN-LOW (CAN-L) | DDE control unit I/master |
+| 48 | M | Shield CAN-bus connector | CAN-bus connector |
+| 49 |  | Not used |  |
+| 50 |  | Not used |  |
+| 51 |  | Not used |  |
+| 52 |  | Not used |  |
+
+#### Plug Connector X2425
+
+| Pin | Type | Description / Signal type | Connection / Measuring notes |
+| --- | --- | --- | --- |
+| 1 | A | Supply Injectors 4 and 7 | Injectors 4 and 7 |
+| 2 |  | Not used |  |
+| 3 | A | Signal Injector 7 | Injector 7 |
+| 4 | A | Supply Injectors 1 and 6 | Injectors 1 and 6 |
+| 5 | A | Signal Injector 1 | Injector 1 |
+| 6 |  | Not used |  |
+| 7 | A | Signal Injector 6 | Injector 6 |
+| 8 |  | Not used |  |
+| 9 | A | Signal Injector 4 | Injector 4 |
+
+<!-- markdownlint-enable MD060 -->
+
+### A.3 A7000 AGS Transmission Control Unit (Removed)
+
+Original 5HP30 transmission controller, removed in the conversion. The conversion disposition of each reused conductor is given in [5. Integrate CAN](#5-integrate-can). Keep these plugs labelled until every required vehicle circuit has been rerouted or proven unnecessary.
+
+<!-- markdownlint-disable MD060 -->
+
+| Number | Pins, colour | Description |
+| --- | --- | --- |
+| X70001 | 9-pin, blue | Plug connector AGS transmission control unit Module 1 |
+| X70003 | 52-pin, blue | Plug connector AGS transmission control unit Module 3 |
+| X70004 | 40-pin, blue | Plug connector AGS transmission control unit Module 4 |
+
+#### Plug Connector X70001
+
+| Pin | Type | Description / Signal type | Connection / Measuring notes |
+| --- | --- | --- | --- |
+| 1 | E | Voltage supply, terminal 15 | Fuse F22 |
+| 2 |  | Not used |  |
+| 3 |  | Not used |  |
+| 4 | M | Ground | Ground connector |
+| 5 | M | Ground | Ground connector |
+| 6 | M | Ground | Ground connector |
+| 7 | E | Continuous positive terminal 30 | Fuse F34 |
+| 8 | E | Positive supply EGS, terminal 87 | Fuse carrier, engine electronics |
+| 9 | E | Positive supply EGS, terminal 87 | Fuse carrier, engine electronics |
+
+#### Plug Connector X70003
+
+| Pin | Type | Description / Signal type | Connection / Measuring notes |
+| --- | --- | --- | --- |
+| 1 | M | Ground Magnet P/N lockout | Shift lock selector lever lock |
+| 2 | A | Supply Magnet P/N lockout | Shift lock selector lever lock |
+| 3 | A | Signal, gearshift position L2 | Electronic immobilizer control unit (EWS) |
+| 4 |  | Not used |  |
+| 5 |  | Not used |  |
+| 6 |  | Not used |  |
+| 7 |  | Not used |  |
+| 8 |  | Not used |  |
+| 9 | E | Signal, gearshift position L6 | Program switch |
+| 10 | E | Signal, gearshift position L5 | Program switch |
+| 11 |  | Not used |  |
+| 12 |  | Not used |  |
+| 13 |  | Not used |  |
+| 14 |  | Not used |  |
+| 15 |  | Not used |  |
+| 16 |  | Not used |  |
+| 17 | E | Kick-down signal | Kick-down switch |
+| 18 | A | Gear indicator signal | Gear indicator light |
+| 19 | E | Steptronic signal, upshift | Steptronic switch |
+| 20 | E | Steptronic signal, back | Steptronic switch |
+| 21 |  | Not used |  |
+| 22 |  | Not used |  |
+| 23 |  | Not used |  |
+| 24 |  | Not used |  |
+| 25 |  | Not used |  |
+| 26 |  | Not used |  |
+| 27 |  | Not used |  |
+| 28 |  | Not used |  |
+| 29 |  | Not used |  |
+| 30 |  | Not used |  |
+| 31 |  | Not used |  |
+| 32 |  | Not used |  |
+| 33 |  | Not used |  |
+| 34 |  | Not used |  |
+| 35 |  | Not used |  |
+| 36 |  | Not used |  |
+| 37 |  | Not used |  |
+| 38 |  | Not used |  |
+| 39 |  | Not used |  |
+| 40 |  | Not used |  |
+| 41 |  | Not used |  |
+| 42 |  | Not used |  |
+| 43 |  | Not used |  |
+| 44 |  | Not used |  |
+| 45 |  | Not used |  |
+| 46 |  | Not used |  |
+| 47 |  | Not used |  |
+| 48 |  | Not used |  |
+| 49 |  | Not used |  |
+| 50 |  | Not used |  |
+| 51 |  | Not used |  |
+| 52 |  | Not used |  |
+
+#### Plug Connector X70004
+
+| Pin | Type | Description / Signal type | Connection / Measuring notes |
+| --- | --- | --- | --- |
+| 1 |  | Not used |  |
+| 2 | M | Output speed shield | Shield up to 10mm in front of gearbox |
+| 3 | M | Turbine speed sensor (-) | Gearshift unit |
+| 4 | E | Selector lever switch L4 | Gear position switch |
+| 5 | M | Turbine speed shield (-) | Shield up to 10mm in front of gearbox |
+| 6 | A | Pressure actuator EDS5 | Gearshift unit |
+| 7 | A | Pressure actuator EDS4 | Gearshift unit |
+| 8 | E/A | CAN link | AGS transmission control unit |
+| 9 |  | Not used |  |
+| 10 |  | Not used |  |
+| 11 | A | Positive supply EDS, MV | Gearshift unit |
+| 12 | M | Transmission oil temperature sensor ground (-) | Gearshift unit |
+| 13 | E | Turbine speed sensor (+) | Gearshift unit |
+| 14 | E | Selector lever switch L3 | Gear position switch |
+| 15 |  | Not used |  |
+| 16 | A | Solenoid valve MV3 | Gearshift unit |
+| 17 | A | Pressure actuator EDS3 | Gearshift unit |
+| 18 | E/A | CAN link | AGS transmission control unit |
+| 19 |  | Not used |  |
+| 20 |  | Not used |  |
+| 21 | A | Positive supply EDS, MV | Gearshift unit |
+| 22 | E | Oil temperature signal | Gearshift unit |
+| 23 | E | Output speed sensor (+) | Gearshift unit |
+| 24 | E | Selector lever switch L2 | Gear position switch |
+| 25 |  | Not used |  |
+| 26 | A | Solenoid valve MV2 | Gearshift unit |
+| 27 | A | Pressure actuator EDS2 | Gearshift unit |
+| 28 | A | Pressure actuator EDS1 | Gearshift unit |
+| 29 |  | Not used |  |
+| 30 |  | Not used |  |
+| 31 | A | Terminal 15 | Gear position switch |
+| 32 | E/A | Diagnostic link TXD | Connector TXD X2039 |
+| 33 | M | Output speed sensor (-) | Gearshift unit |
+| 34 | E | Selector lever switch L1 | Gear position switch |
+| 35 |  | Not used |  |
+| 36 | E/A | CAN-bus high | DDE control unit I/master |
+| 37 | E/A | CAN-bus low | DDE control unit I/master |
+| 38 | A | Solenoid valve MV1 | Gearshift unit |
+| 39 |  | Not used |  |
+| 40 |  | Not used |  |
+
+<!-- markdownlint-enable MD060 -->
